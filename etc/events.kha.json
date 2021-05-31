@@ -1,0 +1,18 @@
+{
+  "episodes": {
+    "A9EDED35-CDFE-4E45-9D75-2BE3B68499F6": {
+      "@type": "Episode",
+      "episodeNumber": 567,
+      "name": "Folge 567",
+      "datePublished": "2021-06-09T20:15:00+02:00",
+      "sdDatePublished": "2021-05-30T12:19:06+02:00"
+    },
+    "EA223330-2DB3-4C6F-89CA-9B6A862AFAB4": {
+      "@type": "Episode",
+      "episodeNumber": 566,
+      "name": "Folge 566",
+      "datePublished": "2021-05-12T20:15:00+02:00",
+      "sdDatePublished": "2021-05-30T16:37:17+02:00"
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "kommtheuteaktenzeichen: Show CLI usage help",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "run",
+        "kha"
+      ],
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "kommtheuteaktenzeichen: Run CLI",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "run",
+        "kha",
+        "check"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "kommtheuteaktenzeichen: Run static type checker",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "run",
+        "typecheck"
+      ],
+      "problemMatcher": [],
+      "group": "test",
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    }
+  ]
+}

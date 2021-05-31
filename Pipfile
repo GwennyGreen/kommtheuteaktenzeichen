@@ -1,0 +1,25 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+kha = {editable = true, path = "./src/kha"}
+colorama = "*"
+fire = "*"
+python-dateutil = "*"
+
+[dev-packages]
+autopep8 = "*"
+mypy = "~=0.812"
+pylint = "~=2.7"
+pytest = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+kha = "python src/kha"
+linter = "pylint src"
+tests = "pytest"
+typecheck = "mypy"
