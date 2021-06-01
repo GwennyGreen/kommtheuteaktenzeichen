@@ -17,7 +17,7 @@ from verdict import Verdict
 
 USER_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
 ZDF_DATE_SEARCH_PATTERN = \
-    r'Nächste Sendung: (?P<f>\d{2}\.\d{2}\.\d{4})'
+    r'Nächste Sendung: (?P<next_date>\d{2}\.\d{2}\.\d{4})'
 ZDF_DATE_FORMAT = r'%d.%m.%Y'
 ZDF_IMPLIED_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
 
