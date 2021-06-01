@@ -6,7 +6,7 @@ from typing import Callable
 import dateutil.tz
 import pytest
 
-from kha.episode import Episode, EpisodeDict
+from episode import Episode, EpisodeDict
 
 
 @pytest.fixture(name='episode_dict')

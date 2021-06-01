@@ -9,11 +9,11 @@ from typing import Any, Callable, Dict, Iterable, Optional, Union, cast
 import dateutil.tz
 
 import settings  # type: ignore
-from .episode import Episode, EpisodeDict
-from .episode_check_response import EpisodeCheckResponse, \
+from episode import Episode, EpisodeDict
+from episode_check_response import EpisodeCheckResponse, \
     EpisodePresentResponse, EpisodeUnknownResponse
-from .local_types import EventsDict
-from .verdict import Verdict
+from local_types import EventsDict
+from verdict import Verdict
 
 USER_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
 ZDF_DATE_SEARCH_PATTERN = \

@@ -5,7 +5,7 @@ from typing import Callable
 
 import pytest
 
-import kha.api as api
+import api
 
 
 @pytest.fixture(name='html_fragment_june')

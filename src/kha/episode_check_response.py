@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Literal, TypedDict, Union
 
-from .verdict import Verdict
+from verdict import Verdict
 
 
 class EpisodePresentResponse(TypedDict):

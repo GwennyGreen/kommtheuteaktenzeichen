@@ -2,8 +2,8 @@
 
 import fire
 
+import api
 import fire_workarounds
-import kha.api as api
 
 fire_workarounds.apply()
 fire.Fire({
