@@ -1,25 +1,22 @@
 """API entry point of the kha package."""
-from datetime import datetime
+
+from datetime import datetime, timezone
 import json
 import operator
-import re
 import textwrap
 from typing import Any, Callable, Dict, Iterable, Optional, Union, cast
 
 import dateutil.tz
 
-import settings  # type: ignore
 from episode import Episode, EpisodeDict
 from episode_check_response import EpisodeCheckResponse, \
     EpisodePresentResponse, EpisodeUnknownResponse
 from local_types import EventsDict
+import parse
+import settings  # type: ignore
 from verdict import Verdict
 
 USER_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
-ZDF_DATE_SEARCH_PATTERN = \
-    r'Nächste Sendung: (?P<next_date>\d{2}\.\d{2}\.\d{4})'
-ZDF_DATE_FORMAT = r'%d.%m.%Y'
-ZDF_IMPLIED_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
 
 EVENTS_JSON_PATH = \
     settings.PROJECT_ROOT / 'etc' / 'events.kha.json'
@@ -55,8 +52,9 @@ def check(
     on the same day as the reference point, considering the user’s
     assumed timezone of `Europe/Berlin`.
 
-    This function uses the episode list in `events.kha.json`,
-    unless `episodes` is given.
+    This function uses the given episode list. If none is given,
+    it loads episodes from the file `events.kha.json`, merges it
+    with episodes found online and uses the result.
     """
     episode = next_episode(episodes=episodes, after=now)
     if episode is None:
@@ -95,25 +93,63 @@ def next_episode(
     the episode is still current if the reference point is past the
     broadcast time (but not past midnight).
 
-    This function uses the episode list in `events.kha.json`,
-    unless `episodes` is given.
+    This function uses the given episode list. If none is given,
+    it loads episodes from the file `events.kha.json`, merges it
+    with episodes found online and uses the result.
     """
     filtered_sorted_episodes = sorted(
         [
             episode
             for episode
-            in (episodes if episodes else cast(
-                Iterable[Episode],
-                _events_dict_from_file()['episodes'].values())
-                )
+            in (episodes if episodes else all_episodes())
             if episode.runs_today_or_later(now=after)
         ],
-        key=operator.attrgetter('date_published')
+        key=operator.attrgetter('date_published'),
     )
 
     if not filtered_sorted_episodes:
         return None
     return next(iter(filtered_sorted_episodes))
+
+
+def _merge(episodes, new_episodes):
+    """
+    Merges existing and new episodes together.
+    Returns a list, sorted by start date.
+    """
+    return sorted(
+        list(set(episodes) | set(new_episodes)),
+        key=operator.attrgetter('date_published'),
+    )
+
+
+def all_episodes() -> Iterable[Episode]:
+    """
+    Loads all known episodes from a file and merges them with
+    the episodes found online.
+    Returns a list, sorted by start date.
+    """
+    return (
+        episode
+        for episode in _merge(
+            all_episodes_from_file(),
+            parse.parse_wunschliste(),
+        )
+        if not(episode.is_rerun or episode.is_spinoff)
+    )
+
+
+def all_episodes_from_file() -> Iterable[Episode]:
+    """
+    Loads all episodes from a file and returns them, sorted by
+    start date.
+    """
+    return sorted(
+        cast(
+            Iterable[Episode],
+            _events_dict_from_file()['episodes'].values()),
+        key=operator.attrgetter('date_published'),
+    )
 
 
 def _events_dict_from_file() -> EventsDict:
@@ -125,8 +161,20 @@ def _events_dict_from_file() -> EventsDict:
             -> Union[Dict[str, Any], Episode]:
         if '@type' in obj:
             if obj['@type'] == 'Episode':
-                return Episode(cast(EpisodeDict, obj),
-                               tz=USER_TIMEZONE)
+                episode_dict = cast(EpisodeDict, obj)
+                return Episode(
+                    episode_dict['episodeNumber'],
+                    name=episode_dict['name'],
+                    date_published=datetime
+                    .fromisoformat(episode_dict['datePublished'])
+                    .astimezone(timezone.utc),
+                    sd_date_published=datetime
+                    .fromisoformat(episode_dict['sdDatePublished'])
+                    .astimezone(timezone.utc),
+                    is_rerun=episode_dict['isRerun'],
+                    is_spinoff=episode_dict['isSpinoff'],
+                    tz=USER_TIMEZONE,
+                )
             raise RuntimeError(f'Unknown type `{obj["@type"]}`')
         return obj
 
@@ -136,33 +184,3 @@ def _events_dict_from_file() -> EventsDict:
             json.load(events_json,
                       object_hook=deserialize)
         )
-
-
-def parse_zdf_datetime(html_source: str) -> datetime:
-    """Parses a datetime from the ZDF website."""
-    next_date_strings = set(re.findall(
-        ZDF_DATE_SEARCH_PATTERN,
-        html_source
-    ))
-    if not next_date_strings:
-        raise RuntimeError('Unable to find date on zdf.de')
-    if len(next_date_strings) > 1:
-        raise RuntimeError(
-            f'Found ambiguous dates {",".join(next_date_strings)} '
-            + 'on zdf.de'
-        )
-
-    next_date = datetime.strptime(
-        next(iter(next_date_strings)),
-        ZDF_DATE_FORMAT
-    )
-
-    return datetime(
-        next_date.year,
-        next_date.month,
-        next_date.day,
-        20,
-        15,
-        00,
-        tzinfo=ZDF_IMPLIED_TIMEZONE
-    ).astimezone(dateutil.tz.UTC)

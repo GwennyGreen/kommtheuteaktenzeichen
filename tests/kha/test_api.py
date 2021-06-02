@@ -1,21 +1,13 @@
 # pylint: disable=missing-function-docstring, missing-module-docstring, no-self-use
 
-from datetime import datetime, timezone
-from typing import Callable
+from datetime import datetime, timezone, tzinfo
+from typing import Callable, Iterable
 
+import dateutil.tz
 import pytest
 
 import api
-
-
-@pytest.fixture(name='html_fragment_june')
-def fixture_html_fragment_june() -> str:
-    return '<p class="teaser-text">Nächste Sendung: 09.06.2021</p>'
-
-
-@pytest.fixture(name='html_fragment_november')
-def fixture_html_fragment_november() -> str:
-    return '<p class="teaser-text">Nächste Sendung: 17.11.2021</p>'
+from episode import Episode
 
 
 @pytest.fixture(name='now')
@@ -30,6 +22,12 @@ def fixture_right_before_the_episode_starts() -> Callable[[], datetime]:
         '2021-06-09T20:14:44+02:00')
 
 
+@pytest.fixture(name='when_the_episode_starts')
+def fixture_when_the_episode_starts() -> Callable[[], datetime]:
+    return lambda: datetime.fromisoformat(
+        '2021-06-09T20:15:00+02:00')
+
+
 @pytest.fixture(name='while_episode_is_running')
 def fixture_while_episode_is_running() -> Callable[[], datetime]:
     return lambda: datetime.fromisoformat(
@@ -42,22 +40,54 @@ def fixture_a_bit_past_midnight() -> Callable[[], datetime]:
         '2021-06-10T00:25:37+02:00')
 
 
-def test_parse_cest_date(html_fragment_june: str) -> None:
-    assert api \
-        .parse_zdf_datetime(html_fragment_june) \
-        == datetime(
-            2021, 6, 9, 18, 15, tzinfo=timezone.utc)
+@pytest.fixture(name='local_timezone')
+def fixture_local_timezone() -> tzinfo:
+    local_timezone = dateutil.tz.gettz('Europe/Berlin')
+    assert local_timezone is not None
+    return local_timezone
 
 
-def test_parse_cet_date(html_fragment_november: str) -> None:
-    assert api \
-        .parse_zdf_datetime(html_fragment_november) \
-        == datetime(
-            2021, 11, 17, 19, 15, tzinfo=timezone.utc)
+@pytest.fixture(name='episode_566')
+def fixture_episode_566(
+        now, local_timezone) -> Episode:
+    return Episode(
+        566,
+        name='Folge 566',
+        date_published=datetime
+        .fromisoformat('2021-05-12T20:15:00+02:00')
+        .astimezone(timezone.utc),
+        sd_date_published=now()
+        .astimezone(timezone.utc),
+        is_rerun=False,
+        is_spinoff=False,
+        tz=local_timezone,
+    )
 
 
-def test_next_start(now: Callable[[], datetime]) -> None:
-    episode = api.next_episode(after=now)
+@pytest.fixture(name='episode_567')
+def fixture_episode_567(
+        now, when_the_episode_starts, local_timezone) -> Episode:
+    return Episode(
+        567,
+        name='Folge 567',
+        date_published=when_the_episode_starts()
+        .astimezone(timezone.utc),
+        sd_date_published=now()
+        .astimezone(timezone.utc),
+        is_rerun=False,
+        is_spinoff=False,
+        tz=local_timezone,
+    )
+
+
+@pytest.fixture(name='episodes')
+def fixture_episodes(episode_566, episode_567) -> Iterable[Episode]:
+    return [episode_567, episode_566]
+
+
+def test_next_start(episodes: Iterable[Episode],
+                    now: Callable[[], datetime]) -> None:
+    episode = api.next_episode(episodes=episodes, after=now)
     assert episode is not None
     assert episode \
         .local_date_published() \
@@ -65,11 +95,11 @@ def test_next_start(now: Callable[[], datetime]) -> None:
         == '2021-06-09T20:15:00+02:00'
 
 
-def test_start_has_not_passed(
-    right_before_the_episode_starts: Callable[[], datetime]) \
+def test_start_has_not_passed(episodes: Iterable[Episode],
+                              right_before_the_episode_starts: Callable[[], datetime]) \
         -> None:
-    episode = api.next_episode(
-        after=right_before_the_episode_starts)
+    episode = api.next_episode(episodes=episodes,
+                               after=right_before_the_episode_starts)
     assert episode is not None
     assert episode \
         .local_date_published() \
@@ -77,10 +107,10 @@ def test_start_has_not_passed(
         == '2021-06-09T20:15:00+02:00'
 
 
-def test_start_has_passed(
-        while_episode_is_running: Callable[[], datetime]) -> None:
-    episode = api.next_episode(
-        after=while_episode_is_running)
+def test_start_has_passed(episodes: Iterable[Episode],
+                          while_episode_is_running: Callable[[], datetime]) -> None:
+    episode = api.next_episode(episodes=episodes,
+                               after=while_episode_is_running)
     assert episode is not None
     assert episode \
         .local_date_published() \
@@ -88,8 +118,8 @@ def test_start_has_passed(
         == '2021-06-09T20:15:00+02:00'
 
 
-def test_no_upcoming_episodes(
-        a_bit_past_midnight: Callable[[], datetime]) -> None:
-    episode = api.next_episode(
-        after=a_bit_past_midnight)
+def test_no_upcoming_episodes(episodes: Iterable[Episode],
+                              a_bit_past_midnight: Callable[[], datetime]) -> None:
+    episode = api.next_episode(episodes=episodes,
+                               after=a_bit_past_midnight)
     assert episode is None

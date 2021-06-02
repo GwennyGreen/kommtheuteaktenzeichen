@@ -1,7 +1,9 @@
+# pylint: disable=too-many-arguments, too-many-instance-attributes
+
 """Single episode of a series."""
 
 from datetime import datetime, timezone, tzinfo
-from typing import Callable, Optional, TypedDict, Union
+from typing import Any, Callable, Optional, TypedDict, Union, cast
 
 from dateutil.relativedelta import relativedelta
 
@@ -17,20 +19,22 @@ class EpisodeDict(TypedDict):
 class Episode:
     """Single episode of a series."""
 
-    def __init__(self, source_dict: EpisodeDict,
+    def __init__(self,
+                 episode_number: int,
+                 name: str = None,
+                 date_published: datetime = None,
+                 sd_date_published: datetime = None,
+                 is_rerun=False,
+                 is_spinoff=False,
                  tz: Optional[tzinfo] = timezone.utc):
-        self.episode_number: Union[int, str] \
-            = source_dict['episodeNumber']
-        self.name: str \
-            = source_dict['name']
-        self.date_published: datetime \
-            = datetime \
-            .fromisoformat(source_dict['datePublished']) \
-            .astimezone(timezone.utc)
-        self.sd_date_published: datetime \
-            = datetime \
-            .fromisoformat(source_dict['sdDatePublished']) \
-            .astimezone(timezone.utc)
+        self.episode_number: Union[int, str] = episode_number
+        self.name: str = name
+        self.date_published: datetime = \
+            date_published.astimezone(timezone.utc)
+        self.sd_date_published: datetime = \
+            sd_date_published.astimezone(timezone.utc)
+        self.is_rerun = is_rerun
+        self.is_spinoff = is_spinoff
         self.timezone = tz
 
     def local_date_published(self) -> datetime:
@@ -98,3 +102,26 @@ class Episode:
         """
         return self.start_of_next_day(now=now) \
             + relativedelta(days=-1)
+
+    def __eq__(self, other: Any) -> bool:
+        if self is other:
+            return True
+        if not isinstance(self, Episode):
+            return False
+        other_episode = cast(Episode, other)
+        return (
+            self.episode_number,
+            self.is_rerun,
+            self.is_spinoff,
+        ) == (
+            other_episode.episode_number,
+            other_episode.is_rerun,
+            other_episode.is_spinoff,
+        )
+
+    def __hash__(self) -> int:
+        return (
+            self.episode_number,
+            self.is_rerun,
+            self.is_spinoff,
+        ).__hash__()

@@ -8,6 +8,7 @@ kha = {editable = true, path = "./src/kha"}
 colorama = "*"
 fire = "*"
 python-dateutil = "*"
+requests = "~=2.25"
 
 [dev-packages]
 autopep8 = "*"
