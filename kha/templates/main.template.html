@@ -21,7 +21,11 @@
     <main>
         <p class="bubble them">{{ question }}</p>
         <h1 class="bubble us">{{ verdict_statement }}.</h1>
-        <p class="smol dangling us">Stand: {{ formatted_sd_date_published }}</p>
+        <p class="smol dangling us">
+            Stand:
+            <time datetime="{{ iso_sd_date_published }}">
+                {{ formatted_sd_date_published }}
+            </time></p>
         <p class="bubble us">{{ short_explanation }}</p>
         <p class="bubble them">{{ reaction }}</p>
     </main>

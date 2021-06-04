@@ -24,8 +24,8 @@ class PageContextDict(TypedDict):
     verdict_statement: str
     formatted_start_date: str
     short_explanation: str
-    long_explanation: str
     answer_known: bool
+    iso_sd_date_published: str
     formatted_sd_date_published: str
     reaction: str
 
@@ -47,8 +47,8 @@ class EpisodeCheckResponseFormatter:
             'verdict_statement': self._verdict_statement(),
             'formatted_start_date': self._formatted_start_date(),
             'short_explanation': self._short_explanation(),
-            'long_explanation': self._long_explanation(),
             'answer_known': self._answer_known(),
+            'iso_sd_date_published': self._iso_sd_date_published(),
             'formatted_sd_date_published':
             self._formatted_sd_date_published(),
             'reaction': self._random_reaction(),
@@ -67,8 +67,11 @@ class EpisodeCheckResponseFormatter:
 
     def _start_date(self):
         return datetime \
-            .fromisoformat(self.response['start_date']) \
+            .fromisoformat(self._iso_start_date()) \
             .astimezone(USER_TIMEZONE)
+
+    def _iso_start_date(self):
+        return self.response['start_date']
 
     def _formatted_start_date(self):
         return self._start_date() \
@@ -83,8 +86,11 @@ class EpisodeCheckResponseFormatter:
         compiled.
         """
         return datetime \
-            .fromisoformat(self.response['sd_date_published']) \
+            .fromisoformat(self._iso_sd_date_published()) \
             .astimezone(USER_TIMEZONE)
+
+    def _iso_sd_date_published(self):
+        return self.response['sd_date_published']
 
     def _formatted_sd_date_published(self):
         return self._sd_date_published() \
@@ -95,6 +101,26 @@ class EpisodeCheckResponseFormatter:
     def _short_explanation(self):
         """A sentence that explains the verdict."""
         return {
+            Verdict.YES: Markup(f"""Heute,
+            <time datetime="{Markup.escape(self._iso_start_date())}">{
+                Markup.escape(self._formatted_start_date())
+            }</time>
+            im {TV_NETWORK}."""),
+            Verdict.NO: Markup(f"""Erst am
+            <time datetime="{Markup.escape(self._iso_start_date())}">{
+                Markup.escape(self._formatted_start_date())
+            }</time>."""),
+            Verdict.UNKNOWN:
+            'In unserer Datenbank steht das gerade nicht drin.',
+        }[self._verdict()]
+
+    def _short_explanation_restricted_markup(self):
+        """
+        A sentence that explains the verdict.
+        Honors the restricted set of markup that Google allows for
+        rich content.
+        """
+        return {
             Verdict.YES:
             f'Heute, {self._formatted_start_date()}'
             + f' im {TV_NETWORK}.',
@@ -104,11 +130,13 @@ class EpisodeCheckResponseFormatter:
             'In unserer Datenbank steht das gerade nicht drin.',
         }[self._verdict()]
 
-    def _long_explanation(self):
+    def _long_explanation_restricted_markup(self):
         """
         A sentence that explains the verdict in a bit more detail.
+        Honors the restricted set of markup that Google allows for
+        rich content.
         """
-        return self._short_explanation() \
+        return self._short_explanation_restricted_markup() \
             if self._verdict() == Verdict.UNKNOWN \
             else f'{self._episode_name()} von {TV_SERIES_LONG_NAME}' \
             + f' kommt am {self._formatted_start_date()}' \
@@ -159,7 +187,8 @@ class EpisodeCheckResponseFormatter:
                     'answerExplanation': {
                         '@context': 'http://schema.org/',
                         '@type': 'Comment',
-                        'text': self._long_explanation()
+                        'text':
+                        self._long_explanation_restricted_markup()
                     }
                 }
             ],
