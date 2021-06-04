@@ -2,6 +2,7 @@
 
 from datetime import datetime
 import locale
+import random
 
 import dateutil.tz
 from flask import Flask, url_for
@@ -14,6 +15,44 @@ TV_SERIES_LONG_NAME = 'Aktenzeichen XY … ungelöst'
 TV_NETWORK = 'ZDF'
 USER_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
 USER_LOCALE = 'de_DE'
+
+POSITIVE_REACTIONS = [
+    '💯',
+    '🥰',
+    '🎉',
+    '🔝',
+    'Großartig 😍',
+    'Ehrenwebsite 👌',
+    'Danke',
+    'thx',
+    '😬',
+    '🤩',
+    '🦹🔫👮',
+    '🆗🆒',
+]
+
+NEGATIVE_REACTIONS = [
+    '😢',
+    'Menno 🥺',
+    'Ach müü.',
+    '🤷',
+    'Warum',
+    'k',
+    'thx',
+    'Na ok',
+    '💩',
+    '😾',
+    '😒',
+    '😕',
+    '😩',
+    '😭',
+    '😠',
+    '😐',
+    '🙄',
+    '😞',
+    'Danke Merkel',
+]
+
 
 locale.setlocale(locale.LC_ALL, USER_LOCALE)
 app = Flask('kha')
@@ -46,6 +85,9 @@ def main():
     long_explanation = short_explanation if response['verdict'] == Verdict.UNKNOWN \
         else f'{response["episode_name"]} von {TV_SERIES_LONG_NAME}' \
         + f' kommt am {formatted_start_date} im {TV_NETWORK}.'
+    available_reactions = POSITIVE_REACTIONS \
+        if response['verdict'] == Verdict.YES \
+        else NEGATIVE_REACTIONS
     return f"""
     <html lang="de">
     <head>
@@ -93,7 +135,7 @@ def main():
         <h1 class="bubble us">{big_verdict}.</h1>
         <p class="smol dangling us">Stand: {formatted_sd_date_published}</p>
         <p class="bubble us">{short_explanation}</p>
-        <p class="bubble them">😢</p>
+        <p class="bubble them">{random.choice(available_reactions)}</p>
     </main>
     <nav>
         <ul>
