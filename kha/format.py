@@ -7,6 +7,7 @@ import json
 import random
 from typing import TypedDict
 
+import flask
 from markupsafe import Markup
 
 from .episode_check_response import EpisodeCheckResponse
@@ -179,10 +180,12 @@ class EpisodeCheckResponseFormatter:
                     self._answer_property_name(): {
                         '@context': 'http://schema.org/',
                         '@type': 'Answer',
-                        'text': '<strong>'
-                        + Markup.escape(self._verdict_statement())
-                        + '</strong><br>'
-                        + Markup.escape(self._short_explanation())
+                        'text': Markup.escape(flask.render_template_string(
+                            """<strong>{{ verdict_statement | safe }}</strong><br>
+                            {{ short_explanation | safe }}""",
+                            verdict_statement=self._verdict_statement(),
+                            short_explanation=self._short_explanation_restricted_markup(),
+                        )),
                     },
                     'answerExplanation': {
                         '@context': 'http://schema.org/',
