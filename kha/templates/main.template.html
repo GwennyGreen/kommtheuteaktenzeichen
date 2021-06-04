@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='default.css') }}">
     <title>{{ title | safe }}</title>
     <script type="application/ld+json">
-    {{ faq_page_seo_json | safe }}
-</script>
+        {{ faq_page_seo_json | safe }}
+    </script>
 </head>
 
 <body>
@@ -25,7 +25,8 @@
             Stand:
             <time datetime="{{ iso_sd_date_published }}">
                 {{ formatted_sd_date_published }}
-            </time></p>
+            </time>
+        </p>
         <p class="bubble us">{{ short_explanation }}</p>
         <p class="bubble them">{{ reaction }}</p>
     </main>
