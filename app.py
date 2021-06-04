@@ -2,7 +2,6 @@
 
 from datetime import datetime
 import locale
-import json
 
 import dateutil.tz
 from flask import Flask, url_for
@@ -10,6 +9,7 @@ from flask import Flask, url_for
 import kha.api
 from kha.verdict import Verdict
 
+SITE_NAME = 'Kommt heute Aktenzeichen?'
 TV_SERIES_LONG_NAME = 'Aktenzeichen XY … ungelöst'
 TV_NETWORK = 'ZDF'
 USER_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
@@ -43,8 +43,12 @@ def main():
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <link rel="apple-touch-icon" sizes="180x180" href="{url_for('static', filename='favicon/apple-touch-icon.png')}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{url_for('static', filename='favicon/favicon-32x32.png')}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{url_for('static', filename='favicon/favicon-16x16.png')}">
+        <link rel="manifest" href="{url_for('webmanifest')}">
         <link rel="stylesheet" href="{url_for('static', filename='default.css')}">
-        <title>Kommt heute Aktenzeichen?</title>
+        <title>{SITE_NAME}</title>
         <script type="application/ld+json">
             {{
                 "@context": "http://schema.org/",
@@ -91,6 +95,32 @@ def main():
     </nav>
     </body>
     </html>
+    """
+
+
+@app.route('/site.webmanifest')
+def webmanifest():
+    """A web app manifest for favicons and other things."""
+    return f"""
+    {
+        "name": "{SITE_NAME}",
+        "short_name": "{SITE_NAME}",
+        "icons": [
+            {
+                "src": "/android-chrome-192x192.png",
+                "sizes": "192x192",
+                "type": "image/png"
+            },
+            {
+                "src": "/android-chrome-512x512.png",
+                "sizes": "512x512",
+                "type": "image/png"
+            }
+        ],
+        "theme_color": "#ffffff",
+        "background_color": "#ffffff",
+        "display": "standalone"
+    }
     """
 
 
