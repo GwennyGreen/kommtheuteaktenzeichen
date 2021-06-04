@@ -3,7 +3,7 @@ body {
     background-color: #fff;
     color: #666;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-    font-size: 12pt;
+    font-size: 14pt;
     line-height: 1.5;
     margin: 3em;
 }
@@ -43,17 +43,18 @@ p {
     margin: 1em 0 0 0;
 }
 
-p.us {
+.us {
     font-size: 14pt;
     font-weight: normal;
+    margin-right: 3em;
 }
 
 .them {
+    color: #17a;
+    font-size: 14pt;
+    font-weight: normal;
+    margin-left: 3em;
     text-align: right;
-}
-
-.bubble.them {
-    color: burlywood;
 }
 
 .bubble {
@@ -62,16 +63,11 @@ p.us {
     line-height: 1em;
 }
 
-p.them {
-    font-size: 14pt;
-    font-weight: normal;
-}
-
 .smol.us,
 .smol.them {
-    font-size: 8pt;
+    font-size: 10pt;
 }
 
 .smol.dangling {
-    margin-top: -8pt;
+    margin-top: -10pt;
 }

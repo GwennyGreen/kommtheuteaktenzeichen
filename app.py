@@ -39,7 +39,7 @@ def main():
     formatted_start_date = start_date \
         .strftime(f'%A, {start_date.day}.\N{NO-BREAK SPACE}%B\N{NO-BREAK SPACE}%Y um %H:%M Uhr')
     return f"""
-    <html>
+    <html lang="de">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
