@@ -132,13 +132,12 @@ class EpisodeCheckResponseFormatter:
             + f' im {TV_NETWORK}.'
 
     def _answer_html_restricted_markup(self):
-        return Markup.escape(
-            flask.render_template(
-                'seo_structured_answer.template.html',
-                verdict_statement=self._verdict_statement(),
-                short_explanation=self
-                ._short_explanation_restricted_markup(),
-            ))
+        return flask.render_template(
+            'seo_structured_answer.template.html',
+            verdict_statement=self._verdict_statement(),
+            short_explanation=self
+            ._short_explanation_restricted_markup(),
+        )
 
     def _answer_known(self):
         """Returns False for `Verdict.UNKNOWN`, True otherwise."""
@@ -167,24 +166,27 @@ class EpisodeCheckResponseFormatter:
         return json.dumps({
             '@context': 'http://schema.org/',
             '@type': 'FAQPage',
-            'name': self.question,
+            'name': Markup.escape(self.question),
             'mainEntity': [
                 {
                     '@context': 'http://schema.org/',
                     '@type': 'Question',
-                    'name': self.question,
+                    'name': Markup.escape(self.question),
                     'answerCount': 1,
                     self._answer_property_name(): {
                         '@context': 'http://schema.org/',
                         '@type': 'Answer',
-                        'text':
-                        self._answer_html_restricted_markup(),
+                        'text': Markup.escape(
+                            self._answer_html_restricted_markup()
+                        ),
                     },
                     'answerExplanation': {
                         '@context': 'http://schema.org/',
                         '@type': 'Comment',
-                        'text':
-                        self._long_explanation_restricted_markup(),
+                        'text': Markup.escape(
+                            self
+                            ._long_explanation_restricted_markup()
+                        ),
                     }
                 }
             ],
