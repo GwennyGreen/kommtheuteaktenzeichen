@@ -180,9 +180,8 @@ class EpisodeCheckResponseFormatter:
                     self._answer_property_name(): {
                         '@context': 'http://schema.org/',
                         '@type': 'Answer',
-                        'text': Markup.escape(flask.render_template_string(
-                            """<strong>{{ verdict_statement | safe }}</strong><br>
-                            {{ short_explanation | safe }}""",
+                        'text': Markup.escape(flask.render_template(
+                            'seo_structured_answer.template.html',
                             verdict_statement=self._verdict_statement(),
                             short_explanation=self._short_explanation_restricted_markup(),
                         )),
