@@ -31,7 +31,7 @@ nav ul {
 h1 {
     font-size: 36pt;
     font-weight: normal;
-    line-height: 1em;
+    line-height: 1.2;
 }
 
 h1.us {
@@ -58,7 +58,7 @@ p {
 .bubble {
     width: calc(100% - 3em);
     max-width: 30em;
-    line-height: 1em;
+    line-height: 1.2;
 }
 
 .smol.us,
@@ -67,5 +67,5 @@ p {
 }
 
 .smol.dangling {
-    margin-top: -10pt;
+    margin-top: -12pt;
 }
