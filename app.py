@@ -33,14 +33,13 @@ POSITIVE_REACTIONS = [
 
 NEGATIVE_REACTIONS = [
     '😢',
-    'Menno 🥺',
+    '🥺 menno',
     'Ach müü.',
     '🤷',
-    'Warum',
+    'aber warum',
     'k',
     'thx',
     'Na ok',
-    '💩',
     '😾',
     '😒',
     '😕',
