@@ -101,23 +101,8 @@ class EpisodeCheckResponseFormatter:
 
     def _short_explanation(self):
         """A sentence that explains the verdict."""
-        return Markup(flask.render_template_string(
-            """
-            {%- if verdict == Verdict.YES -%}
-                Heute,
-                <time datetime="{{ iso_start_date | safe }}">{{
-                    formatted_start_date | safe
-                }}</time>
-                im {{ tv_network }}.
-            {%- elif verdict == Verdict.NO -%}
-                Erst am
-                <time datetime="{{ iso_start_date | safe }}">{{
-                    formatted_start_date | safe
-                }}</time>.
-            {%- else -%}
-                In unserer Datenbank steht das gerade nicht drin.
-            {%- endif -%}
-            """,
+        return Markup(flask.render_template(
+            'short_explanation.template.html',
             formatted_start_date=self._formatted_start_date(),
             iso_start_date=self._iso_start_date(),
             Markup=Markup,
