@@ -61,46 +61,59 @@ app = Flask('kha')
 @app.route('/')
 def main():
     """Main page."""
-    response = kha.api.check()
-    big_verdict = {
-        Verdict.YES: 'Ja',
-        Verdict.NO: 'Nein',
-        Verdict.UNKNOWN: 'Keine Ahnung',
-    }[response['verdict']]
-    sd_date_published = datetime \
-        .fromisoformat(response['sd_date_published']) \
-        .astimezone(USER_TIMEZONE)
-    start_date = datetime \
-        .fromisoformat(response['start_date']) \
-        .astimezone(USER_TIMEZONE)
-    formatted_sd_date_published = sd_date_published \
-        .strftime(f'{sd_date_published.day}.\N{NO-BREAK SPACE}%B\N{NO-BREAK SPACE}%Y')
-    formatted_start_date = start_date \
-        .strftime(f'%A, {start_date.day}.\N{NO-BREAK SPACE}%B\N{NO-BREAK SPACE}%Y'
-        + ' um %H:%M\N{NO-BREAK SPACE}Uhr')
-    short_explanation = {
-        Verdict.YES: f'Heute, {formatted_start_date} im {TV_NETWORK}.',
-        Verdict.NO: f'Erst am {formatted_start_date}.',
-        Verdict.UNKNOWN: 'In unserer Datenbank steht das gerade nicht drin.',
-    }[response['verdict']]
-    long_explanation = short_explanation if response['verdict'] == Verdict.UNKNOWN \
+    def formatted_start_date(response):
+        start_date = datetime \
+            .fromisoformat(response['start_date']) \
+            .astimezone(USER_TIMEZONE)
+        return start_date \
+            .strftime(f'%A, {start_date.day}.\N{NO-BREAK SPACE}%B\N{NO-BREAK SPACE}%Y'
+                      + ' um %H:%M\N{NO-BREAK SPACE}Uhr')
+
+    def formatted_sd_date_published(response):
+        sd_date_published = datetime \
+            .fromisoformat(response['sd_date_published']) \
+            .astimezone(USER_TIMEZONE)
+        return sd_date_published \
+            .strftime(f'{sd_date_published.day}.'
+                      + '\N{NO-BREAK SPACE}%B'
+                      + '\N{NO-BREAK SPACE}%Y')
+
+    def short_explanation(response):
+        return {
+            Verdict.YES: f'Heute, {formatted_start_date(response)} im {TV_NETWORK}.',
+            Verdict.NO: f'Erst am {formatted_start_date(response)}.',
+            Verdict.UNKNOWN: 'In unserer Datenbank steht das gerade nicht drin.',
+        }[response['verdict']]
+
+    def long_explanation(response):
+        return short_explanation(response) \
+        if response['verdict'] == Verdict.UNKNOWN \
         else f'{response["episode_name"]} von {TV_SERIES_LONG_NAME}' \
-        + f' kommt am {formatted_start_date} im {TV_NETWORK}.'
-    available_reactions = POSITIVE_REACTIONS \
-        if response['verdict'] == Verdict.YES \
-        else NEGATIVE_REACTIONS
+        + f' kommt am {formatted_start_date(response)} im {TV_NETWORK}.'
+
+    def positive(response):
+        return response['verdict'] == Verdict.YES
+
+    response = kha.api.check()
     page_context = {
         'title': SITE_NAME,
         'verdict': response['verdict'],
-        'verdict_statement': big_verdict,
-        'formatted_start_date': formatted_start_date,
-        'short_explanation': short_explanation,
-        'long_explanation': long_explanation,
+        'verdict_statement': {
+            Verdict.YES: 'Ja',
+            Verdict.NO: 'Nein',
+            Verdict.UNKNOWN: 'Keine Ahnung',
+        }[response['verdict']],
+        'formatted_start_date': formatted_start_date(response),
+        'short_explanation': short_explanation(response),
+        'long_explanation': long_explanation(response),
         'answer_known': response['verdict'] != Verdict.UNKNOWN,
-        'answer_yes': response['verdict'] == Verdict.YES,
         'sd_date_published': response['sd_date_published'],
-        'formatted_sd_date_published': formatted_sd_date_published,
-        'reaction': random.choice(available_reactions),
+        'formatted_sd_date_published':
+        formatted_sd_date_published(response),
+        'reaction':
+        random.choice(POSITIVE_REACTIONS
+                      if positive(response)
+                      else NEGATIVE_REACTIONS),
     }
     return f"""
     <html lang="de">
