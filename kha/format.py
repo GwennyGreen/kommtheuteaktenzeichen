@@ -188,19 +188,19 @@ class EpisodeCheckResponseFormatter:
                         '@context': 'http://schema.org/',
                         '@type': 'Comment',
                         'text':
-                        self._long_explanation_restricted_markup()
+                        self._long_explanation_restricted_markup(),
                     }
                 }
             ],
             'mainContentOfPage': {
                 '@context': 'http://schema.org/',
                 '@type': 'WebPageElement',
-                'xpath': '/html/body/main'
+                'xpath': '/html/body/main',
             },
             'speakable': {
                 '@context': 'http://schema.org/',
                 '@type': 'WebPageElement',
-                'xpath': '/html/body/main'
+                'xpath': '/html/body/main',
             },
             'sdDatePublished':
             self._sd_date_published().isoformat(timespec='seconds')
