@@ -117,15 +117,7 @@ class EpisodeCheckResponseFormatter:
         Honors the restricted set of markup that Google allows for
         rich content.
         """
-        return {
-            Verdict.YES:
-            f'Heute, {self._formatted_start_date()}'
-            + f' im {TV_NETWORK}.',
-            Verdict.NO:
-            f'Erst am {self._formatted_start_date()}.',
-            Verdict.UNKNOWN:
-            'In unserer Datenbank steht das gerade nicht drin.',
-        }[self._verdict()]
+        return Markup(self._short_explanation()).striptags()
 
     def _long_explanation_restricted_markup(self):
         """
