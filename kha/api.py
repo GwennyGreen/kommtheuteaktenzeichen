@@ -6,21 +6,15 @@ import operator
 from typing import Any, Callable, Dict, Iterable, Optional, Union, cast
 
 import boto3
-import dateutil.tz
 
 from .episode import Episode, EpisodeDict
 from .episode_check_response import EpisodeCheckResponse, \
     EpisodePresentResponse, EpisodeUnknownResponse
 from .local_types import EventsDict
-from .settings import PROJECT_ROOT  # type: ignore
+from .settings \
+    import EVENTS_JSON_FILENAME, LOCAL_EVENTS_JSON_PATH, \
+    S3_BUCKET_NAME, USER_TIMEZONE  # type: ignore
 from .verdict import Verdict
-
-USER_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
-
-EVENTS_JSON_FILENAME = 'events.kha.json'
-EVENTS_JSON_PATH = \
-    PROJECT_ROOT / 'etc' / EVENTS_JSON_FILENAME
-S3_BUCKET_NAME = 'kha-store'
 
 
 def check_episode() -> str:
@@ -180,7 +174,8 @@ def _events_dict_from_file() -> EventsDict:
     Loads an EventsDict from a file and returns it, sorted by
     start date.
     """
-    with EVENTS_JSON_PATH.open(encoding='UTF-8') as events_json:
+    with LOCAL_EVENTS_JSON_PATH.open(encoding='UTF-8') \
+            as events_json:
         return cast(
             EventsDict,
             json.load(events_json,

@@ -3,18 +3,13 @@
 from datetime import datetime
 import re
 
-import dateutil.tz
 import requests
 
 from .episode import Episode
+from .settings \
+    import WUNSCHLISTE_IMPLIED_TIMEZONE, \
+    WUNSCHLISTE_QUERY_PARAMETERS, WUNSCHLISTE_URL  # type: ignore
 
-WUNSCHLISTE_URL = 'https://www.wunschliste.de/ajax/epg_liste.pl'
-WUNSCHLISTE_QUERY_PARAMETERS = {
-    's': '1187',
-    'station': '2',
-}
-
-WUNSCHLISTE_IMPLIED_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
 WUNSCHLISTE_SELECT_EPISODE_PATTERN = r'(?ms)<li.*?</li>'
 
 WUNSCHLISTE_PARSE_EPISODE_PATTERN = r"""(?msx)

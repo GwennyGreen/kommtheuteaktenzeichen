@@ -1,0 +1,36 @@
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('webmanifest') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='default.css') }}">
+    <title>{{ title | safe }}</title>
+    <script type="application/ld+json">
+    {{ faq_page_seo_json | safe }}
+</script>
+</head>
+
+<body>
+    <main>
+        <p class="bubble them">{{ question }}</p>
+        <h1 class="bubble us">{{ verdict_statement }}.</h1>
+        <p class="smol dangling us">Stand: {{ formatted_sd_date_published }}</p>
+        <p class="bubble us">{{ short_explanation }}</p>
+        <p class="bubble them">{{ reaction }}</p>
+    </main>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('static', filename='impressum.html') }}">Impressum</a></li>
+            <li><a href="{{ url_for('static', filename='datenschutz.html') }}">Datenschutz</a></li>
+        </ul>
+    </nav>
+</body>
+
+</html>
