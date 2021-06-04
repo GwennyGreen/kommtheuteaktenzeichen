@@ -2,7 +2,7 @@
 
 from typing import Dict, NewType, TypedDict
 
-from episode import Episode
+from .episode import Episode
 
 
 Uuid = NewType('Uuid', str)

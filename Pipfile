@@ -4,9 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-kha = {editable = true, path = "./src/kha"}
+_app = {editable = true, path = "."}
 colorama = "*"
 fire = "*"
+Flask = "~=2.0"
 python-dateutil = "*"
 requests = "~=2.25"
 
@@ -15,12 +16,16 @@ autopep8 = "*"
 mypy = "~=0.812"
 pylint = "~=2.7"
 pytest = "*"
+zappa = "*"
 
 [requires]
 python_version = "3.8"
 
 [scripts]
-kha = "python src/kha"
-linter = "pylint src"
+deploy = "zappa deploy prod"
+kha = "python kha"
+linter = "pylint kha"
+update = "zappa update prod"
 tests = "pytest"
 typecheck = "mypy"
+web = "flask run"

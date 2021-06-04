@@ -3,32 +3,29 @@
 from datetime import datetime, timezone
 import json
 import operator
-import textwrap
 from typing import Any, Callable, Dict, Iterable, Optional, Union, cast
 
+import boto3
 import dateutil.tz
 
-from episode import Episode, EpisodeDict
-from episode_check_response import EpisodeCheckResponse, \
+from .episode import Episode, EpisodeDict
+from .episode_check_response import EpisodeCheckResponse, \
     EpisodePresentResponse, EpisodeUnknownResponse
-from local_types import EventsDict
-import parse
-import settings  # type: ignore
-from verdict import Verdict
+from .local_types import EventsDict
+from .settings import PROJECT_ROOT  # type: ignore
+from .verdict import Verdict
 
 USER_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
 
+EVENTS_JSON_FILENAME = 'events.kha.json'
 EVENTS_JSON_PATH = \
-    settings.PROJECT_ROOT / 'etc' / 'events.kha.json'
+    PROJECT_ROOT / 'etc' / EVENTS_JSON_FILENAME
+S3_BUCKET_NAME = 'kha-store'
 
 
 def check_episode() -> str:
     """Kommt heute Aktenzeichen?"""
-    print(textwrap.dedent(
-        """\
-        Kommt heute Aktenzeichen?
-        """
-    ))
+    print('Kommt heute Aktenzeichen?')
     check_response = check()
     print({
         Verdict.YES: 'Ja.',
@@ -70,6 +67,8 @@ def check(
             .isoformat(timespec='seconds'),
         'start_date':
         episode.date_published.astimezone(USER_TIMEZONE)
+            .isoformat(timespec='seconds'),
+        'sd_date_published': now().astimezone(USER_TIMEZONE)
             .isoformat(timespec='seconds'),
         'runs_today': episode.runs_today(),
         'episode_name': episode.name,
@@ -131,15 +130,17 @@ def all_episodes() -> Iterable[Episode]:
     """
     return (
         episode
-        for episode in _merge(
-            all_episodes_from_file(),
-            parse.parse_wunschliste(),
-        )
+        for episode in
+        all_episodes_from_s3()
+        # _merge(
+        #     all_episodes_from_s3(),
+        #     parse_wunschliste(),
+        # )
         if not(episode.is_rerun or episode.is_spinoff)
     )
 
 
-def all_episodes_from_file() -> Iterable[Episode]:
+def all_episodes_from_s3() -> Iterable[Episode]:
     """
     Loads all episodes from a file and returns them, sorted by
     start date.
@@ -147,9 +148,31 @@ def all_episodes_from_file() -> Iterable[Episode]:
     return sorted(
         cast(
             Iterable[Episode],
-            _events_dict_from_file()['episodes'].values()),
+            events_dict_from_s3()['episodes'].values()),
         key=operator.attrgetter('date_published'),
     )
+
+
+def _deserialize_events_dict(obj: Dict[str, Any]) \
+        -> Union[Dict[str, Any], Episode]:
+    if '@type' in obj:
+        if obj['@type'] == 'Episode':
+            episode_dict = cast(EpisodeDict, obj)
+            return Episode(
+                episode_dict['episodeNumber'],
+                name=episode_dict['name'],
+                date_published=datetime
+                .fromisoformat(episode_dict['datePublished'])
+                .astimezone(timezone.utc),
+                sd_date_published=datetime
+                .fromisoformat(episode_dict['sdDatePublished'])
+                .astimezone(timezone.utc),
+                is_rerun=episode_dict['isRerun'],
+                is_spinoff=episode_dict['isSpinoff'],
+                tz=USER_TIMEZONE,
+            )
+        raise RuntimeError(f'Unknown type `{obj["@type"]}`')
+    return obj
 
 
 def _events_dict_from_file() -> EventsDict:
@@ -157,30 +180,24 @@ def _events_dict_from_file() -> EventsDict:
     Loads an EventsDict from a file and returns it, sorted by
     start date.
     """
-    def deserialize(obj: Dict[str, Any]) \
-            -> Union[Dict[str, Any], Episode]:
-        if '@type' in obj:
-            if obj['@type'] == 'Episode':
-                episode_dict = cast(EpisodeDict, obj)
-                return Episode(
-                    episode_dict['episodeNumber'],
-                    name=episode_dict['name'],
-                    date_published=datetime
-                    .fromisoformat(episode_dict['datePublished'])
-                    .astimezone(timezone.utc),
-                    sd_date_published=datetime
-                    .fromisoformat(episode_dict['sdDatePublished'])
-                    .astimezone(timezone.utc),
-                    is_rerun=episode_dict['isRerun'],
-                    is_spinoff=episode_dict['isSpinoff'],
-                    tz=USER_TIMEZONE,
-                )
-            raise RuntimeError(f'Unknown type `{obj["@type"]}`')
-        return obj
-
     with EVENTS_JSON_PATH.open(encoding='UTF-8') as events_json:
         return cast(
             EventsDict,
             json.load(events_json,
-                      object_hook=deserialize)
+                      object_hook=_deserialize_events_dict)
         )
+
+
+def events_dict_from_s3(client=None) -> EventsDict:
+    """
+    Loads an EventsDict from an S3 bucket and returns it, sorted by
+    start date.
+    """
+    s3_client = client or boto3.client('s3')
+    response = s3_client.get_object(Bucket=S3_BUCKET_NAME,
+                                    Key=EVENTS_JSON_FILENAME)
+    return cast(
+        EventsDict,
+        json.load(response['Body'],
+                  object_hook=_deserialize_events_dict)
+    )

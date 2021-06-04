@@ -1,16 +1,16 @@
 """Response to a request to check whether an episode runs today."""
 
-from datetime import datetime
 from typing import Literal, TypedDict, Union
 
-from verdict import Verdict
+from .verdict import Verdict
 
 
 class EpisodePresentResponse(TypedDict):
     """Response when an episode has been found."""
     verdict: Literal[Verdict.YES, Verdict.NO]
-    reference_date: datetime
-    start_date: datetime
+    reference_date: str
+    start_date: str
+    sd_date_published: str
     runs_today: bool
     episode_name: str
     episode_number: Union[int, str]

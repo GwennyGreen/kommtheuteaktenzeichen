@@ -6,8 +6,8 @@ from typing import Callable, Iterable
 import dateutil.tz
 import pytest
 
-import api
-from episode import Episode
+import kha.api as api
+from kha.episode import Episode
 
 
 @pytest.fixture(name='now')

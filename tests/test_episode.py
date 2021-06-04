@@ -6,7 +6,7 @@ from typing import Callable
 import dateutil.tz
 import pytest
 
-from episode import Episode
+from kha.episode import Episode
 
 
 @pytest.fixture(name='local_timezone')

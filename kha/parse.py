@@ -6,7 +6,7 @@ import re
 import dateutil.tz
 import requests
 
-from episode import Episode
+from .episode import Episode
 
 WUNSCHLISTE_URL = 'https://www.wunschliste.de/ajax/epg_liste.pl'
 WUNSCHLISTE_QUERY_PARAMETERS = {
