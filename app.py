@@ -1,6 +1,5 @@
 """The main app."""
 
-import json
 import locale
 
 import flask
@@ -25,7 +24,7 @@ def main():
 @app.route('/site.webmanifest')
 def webmanifest():
     """A web app manifest for favicons and other things."""
-    return json.dumps({
+    return {
         'name': settings.SITE_NAME,
         'short_name': settings.SITE_NAME,
         'icons': [
@@ -43,7 +42,7 @@ def webmanifest():
         'theme_color': '#ffffff',
         'background_color': '#ffffff',
         'display': 'standalone'
-    })
+    }
 
 
 def test_s3():
