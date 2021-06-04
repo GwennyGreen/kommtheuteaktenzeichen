@@ -143,6 +143,15 @@ class EpisodeCheckResponseFormatter:
             + f' kommt am {self._formatted_start_date()}' \
             + f' im {TV_NETWORK}.'
 
+    def _answer_html_restricted_markup(self):
+        return Markup.escape(
+            flask.render_template(
+                'seo_structured_answer.template.html',
+                verdict_statement=self._verdict_statement(),
+                short_explanation=self
+                ._short_explanation_restricted_markup(),
+            ))
+
     def _answer_known(self):
         """Returns False for `Verdict.UNKNOWN`, True otherwise."""
         return self._verdict() != Verdict.UNKNOWN
@@ -180,11 +189,8 @@ class EpisodeCheckResponseFormatter:
                     self._answer_property_name(): {
                         '@context': 'http://schema.org/',
                         '@type': 'Answer',
-                        'text': Markup.escape(flask.render_template(
-                            'seo_structured_answer.template.html',
-                            verdict_statement=self._verdict_statement(),
-                            short_explanation=self._short_explanation_restricted_markup(),
-                        )),
+                        'text':
+                        self._answer_html_restricted_markup(),
                     },
                     'answerExplanation': {
                         '@context': 'http://schema.org/',
