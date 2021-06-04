@@ -76,7 +76,8 @@ def main():
     formatted_sd_date_published = sd_date_published \
         .strftime(f'{sd_date_published.day}.\N{NO-BREAK SPACE}%B\N{NO-BREAK SPACE}%Y')
     formatted_start_date = start_date \
-        .strftime(f'%A, {start_date.day}.\N{NO-BREAK SPACE}%B\N{NO-BREAK SPACE}%Y um %H:%M\N{NO-BREAK SPACE}Uhr')
+        .strftime(f'%A, {start_date.day}.\N{NO-BREAK SPACE}%B\N{NO-BREAK SPACE}%Y'
+        + ' um %H:%M\N{NO-BREAK SPACE}Uhr')
     short_explanation = {
         Verdict.YES: f'Heute, {formatted_start_date} im {TV_NETWORK}.',
         Verdict.NO: f'Erst am {formatted_start_date}.',
