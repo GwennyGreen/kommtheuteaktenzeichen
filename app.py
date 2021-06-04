@@ -89,6 +89,19 @@ def main():
     available_reactions = POSITIVE_REACTIONS \
         if response['verdict'] == Verdict.YES \
         else NEGATIVE_REACTIONS
+    page_context = {
+        'title': SITE_NAME,
+        'verdict': response['verdict'],
+        'verdict_statement': big_verdict,
+        'formatted_start_date': formatted_start_date,
+        'short_explanation': short_explanation,
+        'long_explanation': long_explanation,
+        'answer_known': response['verdict'] != Verdict.UNKNOWN,
+        'answer_yes': response['verdict'] == Verdict.YES,
+        'sd_date_published': response['sd_date_published'],
+        'formatted_sd_date_published': formatted_sd_date_published,
+        'reaction': random.choice(available_reactions),
+    }
     return f"""
     <html lang="de">
     <head>
@@ -99,7 +112,7 @@ def main():
         <link rel="icon" type="image/png" sizes="16x16" href="{url_for('static', filename='favicon/favicon-16x16.png')}">
         <link rel="manifest" href="{url_for('webmanifest')}">
         <link rel="stylesheet" href="{url_for('static', filename='default.css')}">
-        <title>{SITE_NAME}</title>
+        <title>{page_context['title']}</title>
         <script type="application/ld+json">
             {{
                 "@context": "http://schema.org/",
@@ -110,13 +123,13 @@ def main():
                         "@type": "Question",
                         "name": "Kommt heute Aktenzeichen?",
                         "answerCount": 1,
-                        "{'suggestedAnswer' if response['verdict'] == Verdict.UNKNOWN else 'acceptedAnswer'}": {{
+                        "{'acceptedAnswer' if page_context['answer_known'] else 'suggestedAnswer'}": {{
                             "@context": "http://schema.org/",
                             "@type": "Answer",
-                            "text": "<strong>{big_verdict}.</strong><br>Erst am {formatted_start_date}."
+                            "text": "<strong>{page_context['verdict_statement']}.</strong><br>{page_context['short_explanation']}"
                         }},
                         "answerExplanation": {{
-                            "text": "{long_explanation}"
+                            "text": "{page_context['long_explanation']}"
                         }}
                     }}
                 ],
@@ -126,17 +139,17 @@ def main():
                 "speakable": {{
                     "xpath": "/html/body/main"
                 }},
-                "sdDatePublished": "{response['sd_date_published']}"
+                "sdDatePublished": "{page_context['sd_date_published']}"
             }}
         </script>
     </head>
     <body>
     <main>
         <p class="bubble them">Kommt heute Aktenzeichen?</p>
-        <h1 class="bubble us">{big_verdict}.</h1>
-        <p class="smol dangling us">Stand: {formatted_sd_date_published}</p>
-        <p class="bubble us">{short_explanation}</p>
-        <p class="bubble them">{random.choice(available_reactions)}</p>
+        <h1 class="bubble us">{page_context['verdict_statement']}.</h1>
+        <p class="smol dangling us">Stand: {page_context['formatted_sd_date_published']}</p>
+        <p class="bubble us">{page_context['short_explanation']}</p>
+        <p class="bubble them">{page_context['reaction']}</p>
     </main>
     <nav>
         <ul>
