@@ -44,14 +44,12 @@ p {
 }
 
 .us {
-    font-size: 14pt;
     font-weight: normal;
     margin-right: 3em;
 }
 
 .them {
     color: #17a;
-    font-size: 14pt;
     font-weight: normal;
     margin-left: 3em;
     text-align: right;
