@@ -38,6 +38,14 @@ def main():
         .strftime(f'{sd_date_published.day}.\N{NO-BREAK SPACE}%B\N{NO-BREAK SPACE}%Y')
     formatted_start_date = start_date \
         .strftime(f'%A, {start_date.day}.\N{NO-BREAK SPACE}%B\N{NO-BREAK SPACE}%Y um %H:%M Uhr')
+    short_explanation = {
+        Verdict.YES: f'Heute, {formatted_start_date} im {TV_NETWORK}.',
+        Verdict.NO: f'Erst am {formatted_start_date}.',
+        Verdict.UNKNOWN: 'In unserer Datenbank steht das gerade nicht drin.',
+    }[response['verdict']]
+    long_explanation = short_explanation if response['verdict'] == Verdict.UNKNOWN \
+        else f'{response["episode_name"]} von {TV_SERIES_LONG_NAME}' \
+        + f' kommt am {formatted_start_date} im {TV_NETWORK}.'
     return f"""
     <html lang="de">
     <head>
@@ -65,7 +73,7 @@ def main():
                             "text": "<strong>{big_verdict}.</strong><br>Erst am {formatted_start_date}."
                         }},
                         "answerExplanation": {{
-                            "text": "{response['episode_name']} von {TV_SERIES_LONG_NAME} kommt am {formatted_start_date} im {TV_NETWORK}."
+                            "text": "{long_explanation}"
                         }}
                     }}
                 ],
@@ -84,7 +92,7 @@ def main():
         <p class="bubble them">Kommt heute Aktenzeichen?</p>
         <h1 class="bubble us">{big_verdict}.</h1>
         <p class="smol dangling us">Stand: {formatted_sd_date_published}</p>
-        <p class="bubble us">Erst am {formatted_start_date}.</p>
+        <p class="bubble us">{short_explanation}</p>
         <p class="bubble them">😢</p>
     </main>
     <nav>
