@@ -7,6 +7,7 @@ import json
 import random
 from typing import TypedDict
 
+from dateutil.relativedelta import relativedelta
 import flask
 from markupsafe import Markup
 
@@ -81,10 +82,17 @@ class EpisodeCheckResponseFormatter:
                       + '\N{NO-BREAK SPACE}%Y'
                       + ' um %H:%M\N{NO-BREAK SPACE}Uhr')
 
+    def _date_modified(self):
+        """
+        Timestamp of the start of the current day, according to
+        the assumed user’s time zone.
+        """
+        return self._sd_date_published() + relativedelta(
+            hour=0, minute=0, second=0, microsecond=0)
+
     def _sd_date_published(self):
         """
-        Returns the point in time at which the response has been
-        compiled.
+        Timestamp of the moment the response has been compiled.
         """
         return datetime \
             .fromisoformat(self._iso_sd_date_published()) \
@@ -167,6 +175,12 @@ class EpisodeCheckResponseFormatter:
             '@context': 'http://schema.org/',
             '@type': 'FAQPage',
             'name': Markup.escape(self.question),
+            'headline': Markup.escape(self.question),
+            'dateModified':
+            self._date_modified().isoformat(timespec='seconds'),
+            'datePublished': '2021-06-03T23:50:00+02:00',
+            'sdDatePublished':
+            self._sd_date_published().isoformat(timespec='seconds'),
             'mainEntity': [
                 {
                     '@context': 'http://schema.org/',
@@ -200,6 +214,4 @@ class EpisodeCheckResponseFormatter:
                 '@type': 'WebPageElement',
                 'xpath': '/html/body/main',
             },
-            'sdDatePublished':
-            self._sd_date_published().isoformat(timespec='seconds')
         })

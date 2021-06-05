@@ -27,6 +27,27 @@ WUNSCHLISTE_QUERY_PARAMETERS = {
 WUNSCHLISTE_IMPLIED_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
 
 
+FAVICONS_MANIFEST = {
+    'name': SITE_NAME,
+    'short_name': SITE_NAME,
+    'icons': [
+        {
+            'src': '/android-chrome-192x192.png',
+            'sizes': '192x192',
+            'type': 'image/png',
+        },
+        {
+            'src': '/android-chrome-512x512.png',
+            'sizes': '512x512',
+            'type': 'image/png',
+        }
+    ],
+    'theme_color': '#ffffff',
+    'background_color': '#ffffff',
+    'display': 'standalone',
+}
+
+
 POSITIVE_REACTIONS = [
     '💯',
     '🥰',

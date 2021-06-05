@@ -24,25 +24,7 @@ def main():
 @app.route('/site.webmanifest')
 def webmanifest():
     """A web app manifest for favicons and other things."""
-    return {
-        'name': settings.SITE_NAME,
-        'short_name': settings.SITE_NAME,
-        'icons': [
-            {
-                'src': '/android-chrome-192x192.png',
-                'sizes': '192x192',
-                'type': 'image/png',
-            },
-            {
-                'src': '/android-chrome-512x512.png',
-                'sizes': '512x512',
-                'type': 'image/png',
-            }
-        ],
-        'theme_color': '#ffffff',
-        'background_color': '#ffffff',
-        'display': 'standalone',
-    }
+    return settings.FAVICONS_MANIFEST
 
 
 def test_s3():
