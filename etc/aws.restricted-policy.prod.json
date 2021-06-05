@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "lambda:InvokeFunction",
+        "s3:GetAccessPoint",
+        "s3:GetAccountPublicAccessBlock",
+        "s3:ListAccessPoints",
+        "s3:ListAccessPointsForObjectLambda",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetAccelerateConfiguration",
+        "s3:GetAnalyticsConfiguration",
+        "s3:GetBucket*",
+        "s3:GetEncryptionConfiguration",
+        "s3:GetIntelligentTieringConfiguration",
+        "s3:GetInventoryConfiguration",
+        "s3:GetLifecycleConfiguration",
+        "s3:GetMetricsConfiguration",
+        "s3:GetObject*",
+        "s3:GetReplicationConfiguration",
+        "s3:ListBucket*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::kha-store",
+        "arn:aws:s3:::kha-store/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:*"
+      ],
+      "Resource": "arn:aws:logs:*:*:log-group:/aws/lambda/kha-prod:*"
+    }
+  ]
+}

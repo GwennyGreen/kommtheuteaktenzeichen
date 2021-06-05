@@ -1,24 +1,26 @@
 {
-    "prod": {
-        "app_function": "app.app",
-        "aws_region": "eu-central-1",
-        "certificate_arn": "arn:aws:acm:us-east-1:110006685725:certificate/069da63e-d632-487d-9ebd-642d1d00a69c",
-        "domain": "kommtheuteaktenzeichen.de",
-        "events": [
-          {
-            "expression": "rate(1 day)",
-            "function": "app.test_s3"
-          }
-        ],
-        "exclude": [
-          ".*",
-          "etc",
-          "tests"
-        ],
-        "profile_name": "kha",
-        "project_name": "kha",
-        "route53_enabled": false,
-        "runtime": "python3.8",
-        "s3_bucket": "kha-store"
-    }
+  "prod": {
+    "app_function": "app.app",
+    "aws_region": "eu-central-1",
+    "certificate_arn": "arn:aws:acm:us-east-1:110006685725:certificate/069da63e-d632-487d-9ebd-642d1d00a69c",
+    "domain": "kommtheuteaktenzeichen.de",
+    "events": [
+      {
+        "expression": "rate(1 day)",
+        "function": "app.test_s3"
+      }
+    ],
+    "exclude": [
+      ".*",
+      "etc",
+      "tests"
+    ],
+    "manage_roles": false,
+    "profile_name": "kha-deploy",
+    "project_name": "kha",
+    "role_name": "kha-prod-RestrictedAccessRole",
+    "route53_enabled": false,
+    "runtime": "python3.8",
+    "s3_bucket": "kha-store"
+  }
 }
