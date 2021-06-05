@@ -10,6 +10,8 @@ To set up Kommt heute Aktenzeichen, you need three things:
 
 3. The Python dependency manager `pipenv`.
 
+4. A set of AWS credentials.
+
 ### Installing pyenv
 
 The Python version manager `pyenv` makes sure you can always keep
@@ -113,7 +115,7 @@ pipenv run typecheck
 
 ## Maintenance
 
-### Refresh dependencies
+### Refreshing dependencies
 
 If you get errors after a Git pull, refresh your dependencies:
 
@@ -135,6 +137,44 @@ To check Kommt heute Aktenzeichen’s dependencies for compatible updates, run:
 
 ```
 pipenv update --dry-run
+```
+
+### Creating IAM credentials
+
+To create a new set of IAM credentials, follow these steps:
+
+- Find the role Zappa has automatically created:
+
+```
+aws iam list-roles
+```
+
+- Note down the ARN of the role.
+  For example:
+  `arn:aws:iam::110006685725:role/kha-prod-ZappaLambdaExecutionRole`
+
+- Create a new IAM user:
+
+```
+aws iam create-user --user-name annapellegrino
+```
+
+- Note down the ARN of the new user.
+
+- Assign the role to the new user. For details, see the [AWS CLI user guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/roles-managingrole-editing-cli.html).
+
+- Create an API token for the new user.
+
+- In the AWS config, add two new sections like so:
+
+```
+[profile <username of the new user>]
+aws_access_key_id = <access key ID>
+aws_secret_access_key = <secret access key>
+
+[profile kha]
+role_arn = <ARN of Zappa’s role>
+source_profile = <username of the new user>
 ```
 
 

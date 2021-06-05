@@ -11,6 +11,7 @@ SITE_NAME = 'Kommt heute Aktenzeichen?'
 TV_SERIES_LONG_NAME = 'Aktenzeichen XY … ungelöst'
 TV_NETWORK = 'ZDF'
 
+AWS_PROFILE = 'kha'
 EVENTS_JSON_FILENAME = 'events.kha.json'
 LOCAL_EVENTS_JSON_PATH = \
     PROJECT_ROOT / 'etc' / EVENTS_JSON_FILENAME

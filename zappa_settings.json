@@ -15,7 +15,7 @@
           "etc",
           "tests"
         ],
-        "profile_name": "default",
+        "profile_name": "kha",
         "project_name": "kha",
         "route53_enabled": false,
         "runtime": "python3.8",

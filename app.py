@@ -2,6 +2,7 @@
 
 import locale
 
+import boto3
 import flask
 
 import kha.api
@@ -10,6 +11,7 @@ import kha.settings as settings
 
 
 locale.setlocale(locale.LC_ALL, settings.USER_LOCALE)
+boto3.setup_default_session(profile_name=settings.AWS_PROFILE)
 app = flask.Flask('kha')
 
 
