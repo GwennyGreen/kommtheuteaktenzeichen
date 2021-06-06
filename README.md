@@ -333,7 +333,7 @@ Steps to set up AWS from scratch:
 
 - Edit the trust relationship of the `kha-prod-RestrictedAccessRole` role to include the following statement:
 
-(Note: This has been experimentally discovered and, independently, documented in [this blog article](https://silvaneves.org/the-role-defined-for-the-function-cannot-be-assumed-by-lambda.html).)
+    (Note: This has been experimentally discovered and, independently, documented in [this blog article](https://silvaneves.org/the-role-defined-for-the-function-cannot-be-assumed-by-lambda.html).)
 
     ```json
     {
