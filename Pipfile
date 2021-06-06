@@ -23,7 +23,7 @@ python_version = "3.8"
 
 [scripts]
 deploy = "zappa deploy prod"
-kha = "python kha"
+kha = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store python kha"
 linter = "pylint kha"
 update = "zappa update prod"
 tail = "zappa tail prod"
