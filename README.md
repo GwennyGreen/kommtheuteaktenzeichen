@@ -68,13 +68,13 @@ pipenv install -d
 To check whether Aktenzeichen runs today, run the following command line:
 
 ```
-pipenv run kha check
+pipenv run cli
 ```
 
 Or run the web app locally:
 
 ```
-pipenv run web
+pipenv run server
 ```
 
 To point the browser to the page quickly, hold down <kbd>⌘</kbd> and double-click the [http://127.0.0.1:5000/](http://127.0.0.1:5000/) URL that appears on your terminal.
@@ -208,13 +208,13 @@ To create a new set of IAM credentials for deployment, follow these steps:
 
 ## Deployment
 
-To deploy, run:
+To deploy the project to production, run:
 
 ```
 pipenv run deploy
 ```
 
-To redeploy, run:
+To redeploy to production, run:
 
 ```
 pipenv run update

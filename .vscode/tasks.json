@@ -4,28 +4,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "kommtheuteaktenzeichen: Show CLI usage help",
-      "type": "process",
-      "command": "pipenv",
-      "args": [
-        "run",
-        "kha"
-      ],
-      "problemMatcher": [],
-      "group": "build",
-      "presentation": {
-        "clear": true,
-        "showReuseMessage": false
-      }
-    },
-    {
       "label": "kommtheuteaktenzeichen: Run CLI",
       "type": "process",
       "command": "pipenv",
       "args": [
         "run",
-        "kha",
-        "check"
+        "cli"
       ],
       "problemMatcher": [],
       "group": {
