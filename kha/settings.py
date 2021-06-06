@@ -14,7 +14,6 @@ TV_NETWORK = 'ZDF'
 EVENTS_JSON_FILENAME = 'events.kha.json'
 LOCAL_EVENTS_JSON_PATH = \
     PROJECT_ROOT / 'etc' / EVENTS_JSON_FILENAME
-S3_BUCKET_NAME = 'kha-store'
 
 USER_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
 USER_LOCALE = 'de_DE'

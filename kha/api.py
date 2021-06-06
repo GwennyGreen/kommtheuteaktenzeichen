@@ -3,6 +3,7 @@
 from datetime import datetime, timezone
 import json
 import operator
+import os
 from typing import Any, Callable, Dict, Iterable, Optional, Union, cast
 
 import boto3
@@ -13,7 +14,7 @@ from .episode_check_response import EpisodeCheckResponse, \
 from .local_types import EventsDict
 from .settings \
     import EVENTS_JSON_FILENAME, LOCAL_EVENTS_JSON_PATH, \
-    S3_BUCKET_NAME, USER_TIMEZONE  # type: ignore
+    USER_TIMEZONE  # type: ignore
 from .verdict import Verdict
 
 
@@ -189,8 +190,10 @@ def events_dict_from_s3(client=None) -> EventsDict:
     start date.
     """
     s3_client = client or boto3.client('s3')
-    response = s3_client.get_object(Bucket=S3_BUCKET_NAME,
-                                    Key=EVENTS_JSON_FILENAME)
+    response = s3_client.get_object(
+        Bucket=os.environ['KHA_DATA_S3_BUCKET'],
+        Key=EVENTS_JSON_FILENAME
+    )
     return cast(
         EventsDict,
         json.load(response['Body'],

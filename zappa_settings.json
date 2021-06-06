@@ -1,6 +1,9 @@
 {
   "prod": {
     "app_function": "app.app",
+    "aws_environment_variables": {
+      "KHA_DATA_S3_BUCKET": "kha-store"
+    },
     "aws_region": "eu-central-1",
     "certificate_arn": "arn:aws:acm:us-east-1:110006685725:certificate/069da63e-d632-487d-9ebd-642d1d00a69c",
     "domain": "kommtheuteaktenzeichen.de",
