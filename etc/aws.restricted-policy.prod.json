@@ -40,6 +40,13 @@
         "logs:*"
       ],
       "Resource": "arn:aws:logs:*:*:log-group:/aws/lambda/kha-prod:*"
+    },
+    {
+      "Action": [
+        "sts:AssumeRole"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:iam::*:role/kha-prod-RestrictedAccessRole"
     }
   ]
 }
