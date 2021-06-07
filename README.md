@@ -65,19 +65,28 @@ pipenv install -d
 
 ## Running kommtheuteaktenzeichen
 
-To check whether Aktenzeichen runs today, run the following command line:
+### Running the server locally
+
+To launch the web app locally:
+
+```
+pipenv run server
+```
+Then point your browser to [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
+To do this really quickly, hold down <kbd>⌘</kbd> and double-click the URL that appears on your terminal.
+
+Note: this local server is connected to the development bucket, not the production one.
+
+
+### Running the CLI version
+
+To do a quick check whether Aktenzeichen runs today, run the following command line:
 
 ```
 pipenv run cli
 ```
 
-Or run the web app locally:
-
-```
-pipenv run server
-```
-
-To point the browser to the page quickly, hold down <kbd>⌘</kbd> and double-click the [http://127.0.0.1:5000/](http://127.0.0.1:5000/) URL that appears on your terminal.
+Note: the CLI is connected to the development bucket, not the production one.
 
 
 ## Contributing to kommtheuteaktenzeichen
@@ -111,6 +120,17 @@ To execute the static type check, run:
 ```
 pipenv run typecheck
 ```
+
+### Uploading etc/events.kha.json to the dev bucket
+
+To upload `etc/events.kha.json` to the development bucket, run:
+
+```
+pipenv run update-dev-json
+```
+
+This allows you to try out a modified JSON file quickly during
+development.
 
 
 ## Maintenance
@@ -173,11 +193,9 @@ To create a new set of IAM credentials with restricted privileges, follow these 
     aws_secret_access_key = <secret access key>
 
     [profile kha-restricted]
-    role_arn = <ARN of the `kha-prod-RestrictedAccessRole` role>
+    role_arn = <ARN of the `kha-dev-RestrictedAccessRole` role>
     source_profile = iam-user-kha
     ```
-
-- Back in the AWS management console, open the `kha-prod-RestrictedAccessRole` role and add a trust relationship to the new `…-kha` user.
 
 
 ### Creating IAM credentials for deployment
@@ -202,8 +220,6 @@ To create a new set of IAM credentials for deployment, follow these steps:
     role_arn = <ARN of the `kha-prod-DeploymentRole` role>
     source_profile = iam-user-kha-deploy
     ```
-
-- Back in the AWS management console, open the `kha-prod-DeploymentRole` role and add a trust relationship to the new `…-kha-deploy` user.
 
 
 ## Deployment
@@ -318,7 +334,20 @@ Steps to set up AWS from scratch:
       --path '/kha/developers/'
     ```
 
-- Create a policy for restricted access:
+- Create a policy for deployment to production:
+
+    ```bash
+    aws iam create-policy \
+      --policy-name 'kha-prod-DeploymentPolicy' \
+      --description \
+        'Grants all privileges needed to deploy and manage kha' \
+      --path '/kha/prod/deploy/' \
+      --policy-document "$(cat 'etc/aws.deployment-policy.prod.json')"
+    ```
+
+- Also create a policy for restricted access to production:
+
+    (Note: The lambda function needs this at runtime.)
 
     ```bash
     aws iam create-policy \
@@ -329,7 +358,23 @@ Steps to set up AWS from scratch:
       --policy-document "$(cat 'etc/aws.restricted-policy.prod.json')"
     ```
 
-- In the AWS management console, create a role named `kha-prod-RestrictedAccessRole` based on your account ID and on the `kha-prod-RestrictedAccessPolicy` policy.
+- Finally, create a policy for restricted access to the development bucket:
+
+    (Note: This is required for local development.)
+
+    ```bash
+    aws iam create-policy \
+      --policy-name 'kha-dev-RestrictedAccessPolicy' \
+      --description \
+        'Grants privileges for local development, e.g. S3 dev bucket access' \
+      --path '/kha/dev/restricted/' \
+      --policy-document "$(cat 'etc/aws.restricted-policy.dev.json')"
+    ```
+
+- In the AWS management console, create three roles:
+  - a role named `kha-prod-DeploymentRole` based on your account ID and on the `kha-prod-DeploymentPolicy` policy.
+  - a role named `kha-prod-RestrictedAccessRole` based on your account ID and on the `kha-prod-RestrictedAccessPolicy` policy.
+  - a role named `kha-dev-RestrictedAccessRole` based on your account ID and on the `kha-dev-RestrictedAccessPolicy` policy.
 
 - Edit the trust relationship of the `kha-prod-RestrictedAccessRole` role to include the following statement:
 
@@ -349,24 +394,13 @@ Steps to set up AWS from scratch:
     }
     ```
 
-- Create another policy for deployment:
-
-    ```bash
-    aws iam create-policy \
-      --policy-name 'kha-prod-DeploymentPolicy' \
-      --description \
-        'Grants all privileges needed to deploy and manage kha' \
-      --path '/kha/prod/deploy/' \
-      --policy-document "$(cat 'etc/aws.deployment-policy.prod.json')"
-    ```
-
-- In the AWS management console, create a role named `kha-prod-DeploymentRole` based on your account ID and on the `kha-prod-DeploymentPolicy` policy.
 
 - Edit the `kha-Maintainers` group and grant them the following permissions:
   - `kha-prod-DeploymentPolicy`
   - `kha-prod-RestrictedAccessPolicy`
+  - `kha-dev-RestrictedAccessPolicy`
 
-- Edit the `kha-Developers` group and grant them the `kha-prod-RestrictedAccessPolicy` permission.
+- Edit the `kha-Developers` group and grant them the `kha-dev-RestrictedAccessPolicy` permission.
 
 
 ## Advanced: 1Password integration

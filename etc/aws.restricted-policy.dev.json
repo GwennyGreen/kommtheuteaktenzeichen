@@ -4,19 +4,6 @@
     {
       "Effect": "Allow",
       "Action": [
-        "lambda:InvokeFunction",
-        "s3:GetAccessPoint",
-        "s3:GetAccountPublicAccessBlock",
-        "s3:ListAccessPoints",
-        "s3:ListAccessPointsForObjectLambda",
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
         "s3:GetAccelerateConfiguration",
         "s3:GetAnalyticsConfiguration",
         "s3:GetBucket*",
@@ -31,8 +18,6 @@
         "s3:PutObject*"
       ],
       "Resource": [
-        "arn:aws:s3:::kha-store",
-        "arn:aws:s3:::kha-store/*",
         "arn:aws:s3:::kha-store-dev",
         "arn:aws:s3:::kha-store-dev/*"
       ]
@@ -49,7 +34,7 @@
         "sts:AssumeRole"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:iam::*:role/kha-prod-RestrictedAccessRole"
+      "Resource": "arn:aws:iam::*:role/kha-dev-RestrictedAccessRole"
     }
   ]
 }
