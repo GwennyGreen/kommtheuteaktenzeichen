@@ -2,7 +2,7 @@
 
 ## Setting up Kommt heute Aktenzeichen
 
-To set up Kommt heute Aktenzeichen, you need three things:
+To set up Kommt heute Aktenzeichen, you need four things:
 
 1. The Python version manager `pyenv`.
 
