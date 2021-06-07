@@ -113,6 +113,15 @@ Note: the CLI is connected to the development bucket, not the production one.
 
 ## Contributing to kommtheuteaktenzeichen
 
+### How kha runs in production
+
+![High-level block diagram that shows how kommtheuteaktenzeichen.de runs in production](doc/assets/how-kha-runs-in-production.drawio.svg)
+
+### How kha runs during local development and testing
+
+![High-level block diagram that shows how kommtheuteaktenzeichen.de runs locally](doc/assets/how-kha-runs-locally.drawio.svg)
+
+
 ### Running the tests
 
 To execute the tests, run:
