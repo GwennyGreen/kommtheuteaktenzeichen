@@ -52,7 +52,7 @@ Proceed after you’ve confirmed one of those to work.
 
 Install `pipenv` as described under https://pipenv.pypa.io/en/latest/install/#installing-pipenv.
 
-### Finishing up the project setup
+### Installing local dependencies
 
 - Go to the kommtheuteaktenzeichen directory.
 
@@ -63,15 +63,21 @@ pipenv install -d
 ```
 
 
+## Integration with Visual Studio Code
+
+If you’re using VS Code, you may prefer to use the _Run Task_ command instead of the various command lines in this document.
+
+
 ## Running kommtheuteaktenzeichen
 
 ### Running the server locally
 
-To launch the web app locally:
+To launch the web server locally, run:
 
 ```
 pipenv run server
 ```
+
 Then point your browser to [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
 To do this really quickly, hold down <kbd>⌘</kbd> and double-click the URL that appears on your terminal.
 
@@ -80,11 +86,27 @@ Note: this local server is connected to the development bucket, not the producti
 
 ### Running the CLI version
 
-To do a quick check whether Aktenzeichen runs today, run the following command line:
+To do a quick check whether Aktenzeichen runs today, run:
 
 ```
 pipenv run cli
 ```
+
+This will print something like:
+
+> ```
+> Kommt heute Aktenzeichen?
+> Nein.
+> {
+>   "verdict": 1,
+>   "reference_date": "2021-06-07T21:50:33+02:00",
+>   "start_date": "2021-06-09T20:15:00+02:00",
+>   "sd_date_published": "2021-06-07T21:50:33+02:00",
+>   "runs_today": false,
+>   "episode_name": "Folge 567",
+>   "episode_number": 567
+> }
+> ```
 
 Note: the CLI is connected to the development bucket, not the production one.
 
@@ -102,8 +124,11 @@ pipenv run tests
 To execute a single test, run e. g.:
 
 ```
-pipenv run tests -vv tests/kha/test_api.py::test_next_start
+pipenv run tests -vv tests/test_api.py::test_next_start
 ```
+
+To execute tests from VS Code, use the test runner built into the Python extension.
+You don’t need _Run tasks_ for executing tests.
 
 ### Running the linter
 
@@ -112,6 +137,10 @@ To execute the linter, run:
 ```
 pipenv run linter
 ```
+
+Linting should just work in VS Code. If you want to run the linter manually, run the _Python: Run Linting_ command.
+
+Specifically, you don’t need _Run tasks_ for linting.
 
 ### Running the static type check
 
@@ -230,7 +259,7 @@ To deploy the project to production, run:
 pipenv run deploy
 ```
 
-To redeploy to production, run:
+To re-deploy to production, run:
 
 ```
 pipenv run update
@@ -241,8 +270,7 @@ pipenv run update
 
 Usually you don’t need to do this.
 
-It’s just in case the project needs to be set up from scratch with a
-brand new AWS account.
+It’s just in case the project needs to be set up from scratch with a brand new AWS account.
 
 Steps to set up AWS from scratch:
 

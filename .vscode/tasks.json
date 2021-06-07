@@ -2,6 +2,25 @@
   // See https://go.microsoft.com/fwlink/?LinkId=733558
   // for the documentation about the tasks.json format
   "version": "2.0.0",
+  "inputs": [
+    {
+      "description": "1Password CLI session token",
+      "id": "opSessionToken",
+      "type": "promptString",
+      "password": true
+    },
+    {
+      "description": "AWS Access Key ID",
+      "id": "awsAccessKeyId",
+      "type": "promptString"
+    },
+    {
+      "description": "AWS Secret Access Key",
+      "id": "awsSecretAccessKey",
+      "type": "promptString",
+      "password": true
+    },
+  ],
   "tasks": [
     {
       "label": "kommtheuteaktenzeichen: Run CLI",
@@ -22,6 +41,39 @@
       }
     },
     {
+      "label": "kommtheuteaktenzeichen: Run local server",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "run",
+        "server"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "kommtheuteaktenzeichen: Tail production logs",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "run",
+        "tail"
+      ],
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
       "label": "kommtheuteaktenzeichen: Run static type checker",
       "type": "process",
       "command": "pipenv",
@@ -31,6 +83,73 @@
       ],
       "problemMatcher": [],
       "group": "test",
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "kommtheuteaktenzeichen: Re-deploy app to production (using secret key)",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "run",
+        "update"
+      ],
+      "options": {
+        "env": {
+          "AWS_ACCESS_KEY_ID": "${input:awsAccessKeyId}",
+          "AWS_SECRET_ACCESS_KEY": "${input:awsSecretAccessKey}"
+        }
+      },
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "kommtheuteaktenzeichen: Re-deploy app to production (using 1Password)",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "run",
+        "update"
+      ],
+      "options": {
+        "env": {
+          "OP_SESSION_feuerhuhn": "${input:opSessionToken}"
+        }
+      },
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "kommtheuteaktenzeichen: Upload `etc/events.kha.json` to dev bucket",
+      "type": "shell",
+      "command": "echo 'Uploading …' && pipenv run update-dev-json && echo 'Done'",
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "kommtheuteaktenzeichen: Install/update local dependencies",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "install",
+        "-d"
+      ],
+      "problemMatcher": [],
+      "group": "build",
       "presentation": {
         "clear": true,
         "showReuseMessage": false
