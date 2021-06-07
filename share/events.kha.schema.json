@@ -1,0 +1,67 @@
+{
+  "$id": "https://json.schemastore.org/storage-catalog-schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Schema for TV episodes and similar events",
+  "type": "object",
+  "definitions": {
+    "episode": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "Episode"
+        },
+        "episodeNumber": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "datePublished": {
+          "description": "Date of broadcast",
+          "type": "string",
+          "format": "date-time"
+        },
+        "sdDatePublished": {
+          "description": "Date on which the structured data was generated",
+          "type": "string",
+          "format": "date-time"
+        },
+        "isRerun": {
+          "description": "Whether this episode broadcast is a re-run",
+          "type": "boolean"
+        },
+        "isSpinoff": {
+          "description": "Whether this episode belongs to a spin-off of the main series",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "@type",
+        "episodeNumber",
+        "datePublished",
+        "sdDatePublished"
+      ]
+    }
+  },
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "episodes": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/episode"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "episodes"
+  ]
+}

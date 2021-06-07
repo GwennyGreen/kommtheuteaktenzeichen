@@ -3,6 +3,14 @@
   "code-runner.executorMap": {
     "python": "pipenv run python",
   },
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "*.kha.json"
+      ],
+      "url": "/share/events.kha.schema.json"
+    }
+  ],
   "python.pythonPath": "./.venv/bin/python",
   "python.linting.pylintEnabled": true,
   "python.linting.pylintPath": "./.venv/bin/pylint",
