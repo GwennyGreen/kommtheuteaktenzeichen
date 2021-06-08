@@ -13,6 +13,10 @@
       "url": "/share/events.kha.schema.json"
     }
   ],
+  "editor.rulers": [
+    68,
+    72
+  ],
   "python.pythonPath": "./.venv/bin/python",
   "python.linting.pylintEnabled": true,
   "python.linting.pylintPath": "./.venv/bin/pylint",
