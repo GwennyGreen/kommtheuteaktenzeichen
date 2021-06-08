@@ -338,7 +338,7 @@ Steps to set up AWS from scratch:
       --description \
         'Grants basic privileges to self-administer one’s own account' \
       --path '/selfadmin/' \
-      --policy-document "$(cat 'etc/aws.selfadmin-policy.json')"
+      --policy-document "$(cat 'share/aws.selfadmin-policy.json')"
     ```
 
 - Assign the following policies directly to the `SelfAdmin` group:
@@ -379,7 +379,7 @@ Steps to set up AWS from scratch:
       --description \
         'Grants all privileges needed to deploy and manage kha' \
       --path '/kha/prod/deploy/' \
-      --policy-document "$(cat 'etc/aws.deployment-policy.prod.json')"
+      --policy-document "$(cat 'share/aws.deployment-policy.prod.json')"
     ```
 
 - Also create a policy for restricted access to production:
@@ -392,7 +392,7 @@ Steps to set up AWS from scratch:
       --description \
         'Grants privileges kha needs at runtime, e.g. S3 access' \
       --path '/kha/prod/restricted/' \
-      --policy-document "$(cat 'etc/aws.restricted-policy.prod.json')"
+      --policy-document "$(cat 'share/aws.restricted-policy.prod.json')"
     ```
 
 - Finally, create a policy for restricted access to the development bucket:
@@ -405,7 +405,7 @@ Steps to set up AWS from scratch:
       --description \
         'Grants privileges for local development, e.g. S3 dev bucket access' \
       --path '/kha/dev/restricted/' \
-      --policy-document "$(cat 'etc/aws.restricted-policy.dev.json')"
+      --policy-document "$(cat 'share/aws.restricted-policy.dev.json')"
     ```
 
 - In the AWS management console, create three roles:
