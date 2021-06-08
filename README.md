@@ -65,7 +65,24 @@ pipenv install -d
 
 ## Integration with Visual Studio Code
 
-If you’re using VS Code, you may prefer to use the _Run Task_ command instead of the various command lines in this document.
+### Recommended extensions
+
+If you’re using VS Code, the following extensions are recommended:
+
+- [Code Runner extension](vscode:extension/formulahendry.code-runner)
+
+- [CSS Formatter extension](vscode:extension/aeschli.vscode-css-formatter)
+
+- [Draw.io Integration extension](vscode:extension/hediet.vscode-drawio)
+
+- [EditorConfig extension](vscode:extension/EditorConfig.EditorConfig)
+
+- [Python extension](vscode:extension/ms-python.python)
+
+
+### Tasks
+
+In VS Code, you may prefer to use the _Run Task_ command instead of the various command lines in this document.
 
 
 ## Running kommtheuteaktenzeichen
