@@ -63,11 +63,11 @@ pipenv install -d
 ```
 
 
-## Integration with Visual Studio Code
+## Visual Studio Code integration
 
 ### Recommended extensions
 
-If you’re using VS Code, the following extensions are recommended:
+If you’re using VS Code, we recommend that you install a couple of extensions:
 
 - [Code Runner extension](vscode:extension/formulahendry.code-runner)
 
@@ -78,6 +78,8 @@ If you’re using VS Code, the following extensions are recommended:
 - [EditorConfig extension](vscode:extension/EditorConfig.EditorConfig)
 
 - [Python extension](vscode:extension/ms-python.python)
+
+VS Code should automatically remind you to install those when you first open the project.
 
 
 ### Tasks

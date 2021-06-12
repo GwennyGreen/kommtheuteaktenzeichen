@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "aeschli.vscode-css-formatter",
+    "EditorConfig.EditorConfig",
+    "formulahendry.code-runner",
+    "hediet.vscode-drawio",
+    "ms-python.python"
+  ]
+}
