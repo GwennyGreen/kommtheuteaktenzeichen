@@ -5,12 +5,17 @@
   },
   "code-runner.ignoreSelection": true,
   "code-runner.saveFileBeforeRun": true,
+  "editor.rulers": [
+    68,
+    72
+  ],
   "files.exclude": {
     "**/.git": true,
     "**/.mypy_cache": true,
     "**/.pytest_cache": true,
     "**/.venv": true,
-    "**/*.egg-info": true
+    "**/*.egg-info": true,
+    "**/__pycache__": true
   },
   "json.schemas": [
     {
@@ -19,10 +24,6 @@
       ],
       "url": "/share/events.kha.schema.json"
     }
-  ],
-  "editor.rulers": [
-    68,
-    72
   ],
   "python.pythonPath": "./.venv/bin/python",
   "python.linting.pylintEnabled": true,
