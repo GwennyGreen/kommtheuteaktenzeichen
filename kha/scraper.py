@@ -1,7 +1,8 @@
-"""Parse episodes from online sources."""
+"""Scrape episodes from online sources."""
 
 from datetime import datetime
 import re
+from typing import Iterable
 
 import requests
 
@@ -30,8 +31,8 @@ WUNSCHLISTE_PARSE_EPISODE_PATTERN = r"""(?msx)
 """
 
 
-def parse_wunschliste():
-    """Parse episodes from wunschliste.de"""
+def scrape_wunschliste() -> Iterable[Episode]:
+    """Scrape episodes from wunschliste.de"""
 
     def parse_episodes(html_source):
         return (

@@ -30,5 +30,5 @@ def webmanifest():
 def test_s3():
     """Test S3 connectivity."""
     print('Printing episode list')
-    print(kha.api.all_episodes_from_s3())
+    print(kha.api.all_episodes_from_store())
     print('Done printing episode list')

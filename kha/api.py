@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import json
 import operator
 import os
-from typing import Any, Callable, Dict, Iterable, Optional, Union, cast
+from typing import Any, Callable, Dict, Iterable, List, Optional, Union, cast
 
 import boto3
 
@@ -117,33 +117,33 @@ def _merge(episodes, new_episodes):
     )
 
 
-def all_episodes() -> Iterable[Episode]:
+def all_episodes() -> List[Episode]:
     """
-    Loads all known episodes from a file and merges them with
-    the episodes found online.
+    Loads all known episodes from the backing store and merges them
+    with the episodes found online.
     Returns a list, sorted by start date.
     """
     return (
         episode
         for episode in
-        all_episodes_from_s3()
+        all_episodes_from_store()
         # _merge(
-        #     all_episodes_from_s3(),
-        #     parse_wunschliste(),
+        #     all_episodes_from_store(),
+        #     scrape_wunschliste(),
         # )
         if not(episode.is_rerun or episode.is_spinoff)
     )
 
 
-def all_episodes_from_s3() -> Iterable[Episode]:
+def all_episodes_from_store() -> List[Episode]:
     """
-    Loads all episodes from a file and returns them, sorted by
-    start date.
+    Loads all episodes from the backing store and returns them,
+    sorted by start date.
     """
     return sorted(
         cast(
             Iterable[Episode],
-            events_dict_from_s3()['episodes'].values()),
+            events_dict_from_store()['episodes'].values()),
         key=operator.attrgetter('date_published'),
     )
 
@@ -184,10 +184,10 @@ def _events_dict_from_file() -> EventsDict:
         )
 
 
-def events_dict_from_s3(client=None) -> EventsDict:
+def events_dict_from_store(client=None) -> EventsDict:
     """
-    Loads an EventsDict from an S3 bucket and returns it, sorted by
-    start date.
+    Loads an EventsDict from the backing store and returns it,
+    sorted by start date.
     """
     s3_client = client or boto3.client('s3')
     response = s3_client.get_object(
