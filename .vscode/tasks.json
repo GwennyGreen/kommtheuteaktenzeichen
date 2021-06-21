@@ -59,13 +59,39 @@
       }
     },
     {
-      "label": "kommtheuteaktenzeichen: Tail production logs",
+      "label": "kommtheuteaktenzeichen: Tail production logs (using secret key)",
       "type": "process",
       "command": "pipenv",
       "args": [
         "run",
         "tail"
       ],
+      "options": {
+        "env": {
+          "AWS_ACCESS_KEY_ID": "${input:awsAccessKeyId}",
+          "AWS_SECRET_ACCESS_KEY": "${input:awsSecretAccessKey}"
+        }
+      },
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "kommtheuteaktenzeichen: Tail production logs (using 1Password)",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "run",
+        "tail"
+      ],
+      "options": {
+        "env": {
+          "OP_SESSION_feuerhuhn": "${input:opSessionToken}"
+        }
+      },
       "problemMatcher": [],
       "group": "build",
       "presentation": {
