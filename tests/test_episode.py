@@ -17,7 +17,10 @@ def fixture_local_timezone() -> tzinfo:
 
 
 @pytest.fixture(name='episode_in_utc')
-def fixture_episode_in_utc(now, when_the_episode_starts) -> Episode:
+def fixture_episode_in_utc(
+    now: Callable[[], datetime],
+    when_the_episode_starts: Callable[[], datetime],
+) -> Episode:
     return Episode(
         567,
         name='Folge 567',
@@ -33,7 +36,10 @@ def fixture_episode_in_utc(now, when_the_episode_starts) -> Episode:
 
 @pytest.fixture(name='episode_in_local_timezone')
 def fixture_episode_in_local_timezone(
-        now, when_the_episode_starts, local_timezone) -> Episode:
+    now: Callable[[], datetime],
+    when_the_episode_starts: Callable[[], datetime],
+    local_timezone: tzinfo,
+) -> Episode:
     return Episode(
         567,
         name='Folge 567',

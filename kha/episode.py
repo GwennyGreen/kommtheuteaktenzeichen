@@ -14,18 +14,20 @@ class EpisodeDict(TypedDict):
     name: str
     datePublished: str
     sdDatePublished: str
+    isRerun: bool
+    isSpinoff: bool
 
 
 class Episode:
     """Single episode of a series."""
 
     def __init__(self,
-                 episode_number: int,
-                 name: str = None,
-                 date_published: datetime = None,
-                 sd_date_published: datetime = None,
-                 is_rerun=False,
-                 is_spinoff=False,
+                 episode_number: Union[int, str],
+                 name: str,
+                 date_published: datetime,
+                 sd_date_published: datetime,
+                 is_rerun: bool = False,
+                 is_spinoff: bool = False,
                  tz: Optional[tzinfo] = timezone.utc):
         self.episode_number: Union[int, str] = episode_number
         self.name: str = name

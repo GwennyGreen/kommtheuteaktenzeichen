@@ -1,11 +1,12 @@
 """The main app."""
 
 import locale
+from typing import Any, Dict
 
 import flask
 
 import kha.api
-from kha.format import EpisodeCheckResponseFormatter
+from kha.format import formatter_for
 import kha.settings as settings
 
 
@@ -14,20 +15,20 @@ app = flask.Flask('kha')
 
 
 @app.route('/')
-def main():
+def main() -> str:
     """Main page."""
-    formatter = EpisodeCheckResponseFormatter(kha.api.check())
+    formatter = formatter_for(kha.api.check())
     return flask.render_template('main.template.html',
                                  **formatter.to_context())
 
 
 @app.route('/site.webmanifest')
-def webmanifest():
+def webmanifest() -> Dict[str, Any]:
     """A web app manifest for favicons and other things."""
     return settings.FAVICONS_MANIFEST
 
 
-def test_s3():
+def test_s3() -> None:
     """Test S3 connectivity."""
     print('Printing episode list')
     print(kha.api.all_episodes_from_store())

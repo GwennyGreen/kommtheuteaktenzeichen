@@ -2,14 +2,14 @@
 
 from datetime import datetime
 import re
-from typing import Iterable
+from typing import Dict, Iterable, Match, Optional, Tuple
 
 import requests
 
 from .episode import Episode
 from .settings \
     import WUNSCHLISTE_IMPLIED_TIMEZONE, \
-    WUNSCHLISTE_QUERY_PARAMETERS, WUNSCHLISTE_URL  # type: ignore
+    WUNSCHLISTE_QUERY_PARAMETERS, WUNSCHLISTE_URL
 
 WUNSCHLISTE_SELECT_EPISODE_PATTERN = r'(?ms)<li.*?</li>'
 
@@ -34,7 +34,8 @@ WUNSCHLISTE_PARSE_EPISODE_PATTERN = r"""(?msx)
 def scrape_wunschliste() -> Iterable[Episode]:
     """Scrape episodes from wunschliste.de"""
 
-    def parse_episodes(html_source):
+    def parse_episodes(html_source: str) \
+            -> Iterable[Tuple[str, Optional[Match[str]]]]:
         return (
             (
                 episode_html,
@@ -46,13 +47,13 @@ def scrape_wunschliste() -> Iterable[Episode]:
                           html_source)
         )
 
-    def cleanup_html(html_dict):
+    def cleanup_html(html_dict: Dict[str, str]) -> Dict[str, str]:
         return {
             key: re.sub(r'(?m)(?:\s|\\n)+(?=\s|\\n)', '', value)
             for key, value in html_dict.items()
         }
 
-    def to_episode(raw_episode_dict):
+    def to_episode(raw_episode_dict: Dict[str, str]) -> Episode:
         return Episode(
             int(raw_episode_dict['episode_number']),
             name=raw_episode_dict['name'],

@@ -7,14 +7,15 @@ import os
 from typing import Any, Callable, Dict, Iterable, List, Optional, Union, cast
 
 import boto3
+from mypy_boto3_s3.client import S3Client
 
 from .episode import Episode, EpisodeDict
 from .episode_check_response import EpisodeCheckResponse, \
     EpisodePresentResponse, EpisodeUnknownResponse
-from .local_types import EventsDict
+from .local_types import EventsDict, IsoDatetimeStr
 from .settings \
     import EVENTS_JSON_FILENAME, LOCAL_EVENTS_JSON_PATH, \
-    USER_TIMEZONE  # type: ignore
+    USER_TIMEZONE
 from .verdict import Verdict
 
 
@@ -26,8 +27,8 @@ def check_episode() -> str:
         Verdict.YES: 'Ja.',
         Verdict.NO: 'Nein.',
         Verdict.UNKNOWN: 'Keine Ahnung.',
-    }[check_response['verdict']])
-    return json.dumps(check_response, indent=2)
+    }[check_response.verdict])
+    return json.dumps(check_response.__dict__, indent=2)
 
 
 def check(
@@ -50,25 +51,35 @@ def check(
     """
     episode = next_episode(episodes=episodes, after=now)
     if episode is None:
-        return EpisodeUnknownResponse({
-            'verdict': Verdict.UNKNOWN
-        })
+        return EpisodeUnknownResponse(
+            sd_date_published=IsoDatetimeStr(
+                now()
+                .astimezone(USER_TIMEZONE)
+                .isoformat(timespec='seconds')
+            )
+        )
 
-    return EpisodePresentResponse({
-        'verdict':
-        Verdict.YES if episode.runs_today() else Verdict.NO,
-        'reference_date':
-        now().astimezone(USER_TIMEZONE)
-            .isoformat(timespec='seconds'),
-        'start_date':
-        episode.date_published.astimezone(USER_TIMEZONE)
-            .isoformat(timespec='seconds'),
-        'sd_date_published': now().astimezone(USER_TIMEZONE)
-            .isoformat(timespec='seconds'),
-        'runs_today': episode.runs_today(),
-        'episode_name': episode.name,
-        'episode_number': episode.episode_number,
-    })
+    return EpisodePresentResponse(
+        verdict=Verdict.YES if episode.runs_today() else Verdict.NO,
+        reference_date=IsoDatetimeStr(
+            now()
+            .astimezone(USER_TIMEZONE)
+            .isoformat(timespec='seconds')
+        ),
+        start_date=IsoDatetimeStr(
+            episode.date_published
+            .astimezone(USER_TIMEZONE)
+            .isoformat(timespec='seconds')
+        ),
+        sd_date_published=IsoDatetimeStr(
+            now()
+            .astimezone(USER_TIMEZONE)
+            .isoformat(timespec='seconds')
+        ),
+        runs_today=episode.runs_today(),
+        episode_name=episode.name,
+        episode_number=episode.episode_number,
+    )
 
 
 def next_episode(
@@ -106,7 +117,10 @@ def next_episode(
     return next(iter(filtered_sorted_episodes))
 
 
-def _merge(episodes, new_episodes):
+def _merge(
+    episodes: Iterable[Episode],
+    new_episodes: Iterable[Episode],
+) -> List[Episode]:
     """
     Merges existing and new episodes together.
     Returns a list, sorted by start date.
@@ -117,7 +131,7 @@ def _merge(episodes, new_episodes):
     )
 
 
-def all_episodes() -> List[Episode]:
+def all_episodes() -> Iterable[Episode]:
     """
     Loads all known episodes from the backing store and merges them
     with the episodes found online.
@@ -184,7 +198,7 @@ def _events_dict_from_file() -> EventsDict:
         )
 
 
-def events_dict_from_store(client=None) -> EventsDict:
+def events_dict_from_store(client: Optional[S3Client] = None) -> EventsDict:
     """
     Loads an EventsDict from the backing store and returns it,
     sorted by start date.

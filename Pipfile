@@ -15,9 +15,12 @@ requests = "~=2.25"
 
 [dev-packages]
 autopep8 = "*"
+"boto3-stubs[s3]" = "*"
 mypy = "~=0.812"
 pylint = "~=2.7"
 pytest = "*"
+types-python-dateutil = "*"
+types-requests = "*"
 zappa = "*"
 
 [requires]

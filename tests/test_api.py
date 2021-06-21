@@ -49,7 +49,9 @@ def fixture_local_timezone() -> tzinfo:
 
 @pytest.fixture(name='episode_566')
 def fixture_episode_566(
-        now, local_timezone) -> Episode:
+        now: Callable[[], datetime],
+        local_timezone: tzinfo,
+) -> Episode:
     return Episode(
         566,
         name='Folge 566',
@@ -66,7 +68,10 @@ def fixture_episode_566(
 
 @pytest.fixture(name='episode_567')
 def fixture_episode_567(
-        now, when_the_episode_starts, local_timezone) -> Episode:
+        now: Callable[[], datetime],
+        when_the_episode_starts: Callable[[], datetime],
+        local_timezone: tzinfo,
+) -> Episode:
     return Episode(
         567,
         name='Folge 567',
@@ -81,7 +86,8 @@ def fixture_episode_567(
 
 
 @pytest.fixture(name='episodes')
-def fixture_episodes(episode_566, episode_567) -> Iterable[Episode]:
+def fixture_episodes(episode_566: Episode, episode_567: Episode) \
+        -> Iterable[Episode]:
     return [episode_567, episode_566]
 
 
