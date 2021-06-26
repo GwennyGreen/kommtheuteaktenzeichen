@@ -25,6 +25,7 @@
       "url": "/share/events.kha.schema.json"
     }
   ],
+  "python.defaultInterpreterPath": "./.venv/bin/python",
   "python.pythonPath": "./.venv/bin/python",
   "python.linting.pylintEnabled": true,
   "python.linting.pylintPath": "./.venv/bin/pylint",
