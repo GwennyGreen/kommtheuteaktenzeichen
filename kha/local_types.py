@@ -17,14 +17,9 @@ RichContentMarkupStr = NewType('RichContentMarkupStr', str)
 Uuid = NewType('Uuid', str)
 
 
-class EpisodesDict(TypedDict):
-    """Dictionary of episodes, addressable by ID."""
-    episodes: Dict[Uuid, Episode]
-
-
 class EventsDict(TypedDict):
     """Top-level dictionary."""
-    episodes: EpisodesDict
+    episodes: Dict[Uuid, Episode]
 
 
 class PageContextDict(TypedDict):
