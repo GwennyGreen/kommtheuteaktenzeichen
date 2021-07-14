@@ -14,11 +14,15 @@ from .settings \
 WUNSCHLISTE_SELECT_EPISODE_PATTERN = r'(?ms)<li.*?</li>'
 
 WUNSCHLISTE_PARSE_EPISODE_PATTERN = r"""(?msx)
-    [A-Z][a-z],[^<]+                  # Weekday
-    (?P<day>\d{2})\.
-    (?P<month>\d{2})\.
-    <.*?>                             # Multiple text nodes or tags
-    (?P<year>\d{4})
+    (?:
+        heute|
+        morgen|
+        [A-Z][a-z],[^<]+              # Weekday
+        (?P<day>\d{2})\.
+        (?P<month>\d{2})\.
+        <.*?>                         # Multiple text nodes or tags
+        (?P<year>\d{4})
+    )
     <.*?>                             # Multiple text nodes or tags
     (?P<hour>\d{1,2}):
     (?P<minute>\d{2})[^<]+h
@@ -83,4 +87,7 @@ def scrape_wunschliste(html: Optional[str] = None) \
         if not episode_match:
             raise RuntimeError(
                 f'Unable to parse episode from {repr(episode_html)}')
-        yield to_episode(cleanup_html(episode_match.groupdict()))
+        if episode_match.groupdict()['day']:
+            yield to_episode(
+                cleanup_html(episode_match.groupdict())
+            )
