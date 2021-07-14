@@ -53,6 +53,25 @@ def fixture_episode_in_local_timezone(
     )
 
 
+@pytest.fixture(name='rerun_episode')
+def fixture_rerun_episode(
+    now: Callable[[], datetime],
+    when_the_episode_starts: Callable[[], datetime],
+    local_timezone: tzinfo,
+) -> Episode:
+    return Episode(
+        567,
+        name='Folge 567',
+        date_published=when_the_episode_starts()
+        .astimezone(timezone.utc),
+        sd_date_published=now()
+        .astimezone(timezone.utc),
+        is_rerun=True,
+        is_spinoff=False,
+        tz=local_timezone,
+    )
+
+
 @pytest.fixture(name='now')
 def fixture_now() -> Callable[[], datetime]:
     return lambda: datetime.fromisoformat(
@@ -153,3 +172,14 @@ def test_past_episode(
         now=a_bit_past_midnight)
     assert not episode_in_local_timezone.runs_today_or_later(
         now=a_bit_past_midnight)
+
+
+def test_domain_key(
+    episode_in_utc: Episode,
+    episode_in_local_timezone: Episode,
+    rerun_episode: Episode,
+) -> None:
+    assert episode_in_utc.domain_key \
+        == episode_in_local_timezone.domain_key
+    assert episode_in_local_timezone.domain_key \
+        != rerun_episode.domain_key

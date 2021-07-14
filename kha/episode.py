@@ -3,7 +3,7 @@
 """Single episode of a series."""
 
 from datetime import datetime, timezone, tzinfo
-from typing import Any, Callable, Optional, TypedDict, Union, cast
+from typing import Any, Callable, Optional, Tuple, TypedDict, Union, cast
 
 from dateutil.relativedelta import relativedelta
 
@@ -38,6 +38,20 @@ class Episode:
         self.is_rerun = is_rerun
         self.is_spinoff = is_spinoff
         self.timezone = tz
+
+    @property
+    def domain_key(self) \
+            -> Tuple[Union[int, str], bool, bool]:
+        """
+        Domain key to identify an episode.
+        Two episodes are the same thing if and only if they have
+        the same domain key.
+        """
+        return (
+            self.episode_number,
+            self.is_rerun,
+            self.is_spinoff,
+        )
 
     def local_date_published(self) -> datetime:
         """Returns `date_published` in the local timezone."""

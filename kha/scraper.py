@@ -31,8 +31,15 @@ WUNSCHLISTE_PARSE_EPISODE_PATTERN = r"""(?msx)
 """
 
 
-def scrape_wunschliste() -> Iterable[Episode]:
+def scrape_wunschliste(html: Optional[str] = None) \
+        -> Iterable[Episode]:
     """Scrape episodes from wunschliste.de"""
+
+    def get_html() -> str:
+        response = requests.get(WUNSCHLISTE_URL,
+                                params=WUNSCHLISTE_QUERY_PARAMETERS)
+        response.raise_for_status()
+        return response.text
 
     def parse_episodes(html_source: str) \
             -> Iterable[Tuple[str, Optional[Match[str]]]]:
@@ -71,10 +78,8 @@ def scrape_wunschliste() -> Iterable[Episode]:
             tz=WUNSCHLISTE_IMPLIED_TIMEZONE,
         )
 
-    response = requests.get(WUNSCHLISTE_URL,
-                            params=WUNSCHLISTE_QUERY_PARAMETERS)
-    response.raise_for_status()
-    for episode_html, episode_match in parse_episodes(response.text):
+    for episode_html, episode_match \
+            in parse_episodes(html or get_html()):
         if not episode_match:
             raise RuntimeError(
                 f'Unable to parse episode from {repr(episode_html)}')
