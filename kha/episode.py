@@ -43,6 +43,10 @@ class Episode:
         """Returns `date_published` in the local timezone."""
         return self.date_published.astimezone(self.timezone)
 
+    def local_sd_date_published(self) -> datetime:
+        """Returns `sd_date_published` in the local timezone."""
+        return self.sd_date_published.astimezone(self.timezone)
+
     def runs_today(
             self,
             now: Callable[..., datetime] = datetime.now
@@ -105,25 +109,19 @@ class Episode:
         return self.start_of_next_day(now=now) \
             + relativedelta(days=-1)
 
-    def __eq__(self, other: Any) -> bool:
-        if self is other:
-            return True
-        if not isinstance(self, Episode):
-            return False
-        other_episode = cast(Episode, other)
-        return (
-            self.episode_number,
-            self.is_rerun,
-            self.is_spinoff,
-        ) == (
-            other_episode.episode_number,
-            other_episode.is_rerun,
-            other_episode.is_spinoff,
-        )
-
-    def __hash__(self) -> int:
-        return (
-            self.episode_number,
-            self.is_rerun,
-            self.is_spinoff,
-        ).__hash__()
+    def __repr__(self) -> str:
+        return 'Episode(' + ', '.join([
+            repr(self.episode_number),
+            f'name={repr(self.name)}',
+            'date_published=datetime.datetime.fromisoformat'
+            + '({})'.format(repr(self
+                                 .local_date_published()
+                                 .isoformat(timespec='seconds'))),
+            'sd_date_published=datetime.datetime.fromisoformat'
+            + '({})'.format(repr(self
+                                 .local_sd_date_published()
+                                 .isoformat(timespec='seconds'))),
+            f'is_rerun={repr(self.is_rerun)}',
+            f'is_spinoff={repr(self.is_spinoff)}',
+            f'tz={repr(self.timezone)}',
+        ]) + ')'
