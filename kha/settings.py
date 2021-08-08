@@ -11,6 +11,8 @@ SITE_NAME = 'Kommt heute Aktenzeichen?'
 TV_SERIES_LONG_NAME = 'Aktenzeichen XY … ungelöst'
 TV_NETWORK = 'ZDF'
 
+EVENTS_JSON_BUCKET_DEV = 'kha-store-dev'
+EVENTS_JSON_BUCKET_PROD = 'kha-store'
 EVENTS_JSON_FILENAME = 'events.kha.json'
 LOCAL_EVENTS_JSON_PATH = \
     PROJECT_ROOT / 'etc' / EVENTS_JSON_FILENAME

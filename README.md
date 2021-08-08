@@ -108,7 +108,7 @@ Note: this local server is connected to the development bucket, not the producti
 To do a quick check whether Aktenzeichen runs today, run:
 
 ```
-pipenv run cli
+pipenv run cli check
 ```
 
 This will print something like:

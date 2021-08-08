@@ -27,7 +27,7 @@ zappa = "*"
 python_version = "3.8"
 
 [scripts]
-cli = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store-dev python kha check"
+cli = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store-dev python kha"
 deploy = "zappa deploy prod"
 linter = "pylint kha"
 scraper = "python -c 'import kha.scraper\nfor episode in kha.scraper.scrape_wunschliste(): print(repr(episode))'"

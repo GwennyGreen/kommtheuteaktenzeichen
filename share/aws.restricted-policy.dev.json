@@ -25,6 +25,18 @@
     {
       "Effect": "Allow",
       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:ListBucket*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::kha-store",
+        "arn:aws:s3:::kha-store/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
         "logs:*"
       ],
       "Resource": "arn:aws:logs:*:*:log-group:/aws/lambda/kha-prod:*"

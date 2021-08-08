@@ -23,18 +23,53 @@
   ],
   "tasks": [
     {
-      "label": "kommtheuteaktenzeichen: Run CLI",
+      "label": "kommtheuteaktenzeichen CLI: Check whether an episode runs today",
       "type": "process",
       "command": "pipenv",
       "args": [
         "run",
-        "cli"
+        "cli",
+        "check"
       ],
       "problemMatcher": [],
       "group": {
         "kind": "build",
         "isDefault": true
       },
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "kommtheuteaktenzeichen CLI: Print events.kha.json from dev bucket",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "run",
+        "cli",
+        "print",
+        "dev"
+      ],
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "kommtheuteaktenzeichen CLI: Print events.kha.json from prod bucket",
+      "type": "process",
+      "command": "pipenv",
+      "args": [
+        "run",
+        "cli",
+        "print",
+        "prod"
+      ],
+      "problemMatcher": [],
+      "group": "build",
       "presentation": {
         "clear": true,
         "showReuseMessage": false

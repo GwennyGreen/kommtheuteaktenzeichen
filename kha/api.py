@@ -14,8 +14,8 @@ from .episode_check_response import EpisodeCheckResponse, \
     EpisodePresentResponse, EpisodeUnknownResponse
 from .local_types import EventsDict, IsoDatetimeStr
 from .settings \
-    import EVENTS_JSON_FILENAME, LOCAL_EVENTS_JSON_PATH, \
-    USER_TIMEZONE
+    import EVENTS_JSON_BUCKET_DEV, EVENTS_JSON_BUCKET_PROD, \
+    EVENTS_JSON_FILENAME, LOCAL_EVENTS_JSON_PATH, USER_TIMEZONE
 from .verdict import Verdict
 
 
@@ -213,3 +213,29 @@ def events_dict_from_store(client: Optional[S3Client] = None) -> EventsDict:
         json.load(response['Body'],
                   object_hook=_deserialize_events_dict)
     )
+
+
+def print_episodes_dev(client: Optional[S3Client] = None) -> None:
+    """
+    Downloads episodes from the backing store and prints them
+    on standard output.
+    """
+    _print_episodes(EVENTS_JSON_BUCKET_DEV, client)
+
+
+def print_episodes_prod(client: Optional[S3Client] = None) -> None:
+    """
+    Downloads episodes from the backing store and prints them
+    on standard output.
+    """
+    _print_episodes(EVENTS_JSON_BUCKET_PROD, client)
+
+
+def _print_episodes(bucket: str,
+                    client: Optional[S3Client] = None) -> None:
+    s3_client = client or boto3.client('s3')
+    response = s3_client.get_object(
+        Bucket=bucket,
+        Key=EVENTS_JSON_FILENAME,
+    )
+    print(response['Body'].read().decode())
