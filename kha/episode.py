@@ -3,7 +3,7 @@
 """Single episode of a series."""
 
 from datetime import datetime, timezone, tzinfo
-from typing import Any, Callable, Optional, Tuple, TypedDict, Union, cast
+from typing import Callable, Optional, Tuple, TypedDict, Union
 
 from dateutil.relativedelta import relativedelta
 
