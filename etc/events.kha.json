@@ -35,6 +35,24 @@
       "sdDatePublished": "2021-07-14T22:27:08+02:00",
       "isRerun": false,
       "isSpinoff": false
+    },
+    "02F7D287-0E56-419D-B3C8-71B277C36768": {
+      "@type": "Episode",
+      "episodeNumber": 570,
+      "name": "Folge 570",
+      "datePublished": "2021-09-15T20:15:00+02:00",
+      "sdDatePublished": "2021-08-17T12:55:50+02:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "E8884446-337E-4C56-A943-B9CC0E608A60": {
+      "@type": "Episode",
+      "episodeNumber": 571,
+      "name": "Folge 571",
+      "datePublished": "2021-10-13T20:15:00+02:00",
+      "sdDatePublished": "2021-09-15T15:08:16+02:00",
+      "isRerun": false,
+      "isSpinoff": false
     }
   }
 }
