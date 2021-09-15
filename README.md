@@ -178,7 +178,7 @@ To execute the static type check, run:
 pipenv run typecheck
 ```
 
-### Uploading etc/events.kha.json to the dev bucket
+### Uploading a local events.kha.json file to the dev bucket
 
 To upload `etc/events.kha.json` to the development bucket, run:
 
@@ -188,6 +188,24 @@ pipenv run update-dev-json
 
 This allows you to try out a modified JSON file quickly during
 development.
+
+### Uploading a local events.kha.json file to the prod bucket
+
+Uploading a local `events.kha.json` file to the production bucket is
+usually not necessary. The scheduled scraper should already keep the
+file updated.
+
+If you want to upload `events.kha.json` to production anyway,
+substitute `PATH_TO_EVENTS_KHA_JSON` in the following command line
+with the full path to the file, then run the modified command line.
+
+```
+aws --profile=kha-deploy s3 cp PATH_TO_EVENTS_KHA_JSON s3://kha-store/events.kha.json
+```
+
+Running that command line will overwrite the existing JSON in
+production, and will break the production website if the JSON is
+faulty.
 
 
 ## Maintenance
