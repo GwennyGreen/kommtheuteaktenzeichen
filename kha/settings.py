@@ -82,5 +82,4 @@ NEGATIVE_REACTIONS = [
     '😐',
     '🙄',
     '😞',
-    'Danke Merkel',
 ]
