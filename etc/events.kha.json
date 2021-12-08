@@ -71,6 +71,15 @@
       "sdDatePublished": "2021-11-09T23:00:50+01:00",
       "isRerun": false,
       "isSpinoff": false
+    },
+    "0ABCB92F-45E1-4A8D-8CC3-C8B3A5193DDA": {
+      "@type": "Episode",
+      "episodeNumber": 574,
+      "name": "Folge 574",
+      "datePublished": "2022-01-12T20:15:00+01:00",
+      "sdDatePublished": "2021-12-08T23:22:00+01:00",
+      "isRerun": false,
+      "isSpinoff": false
     }
   }
 }
