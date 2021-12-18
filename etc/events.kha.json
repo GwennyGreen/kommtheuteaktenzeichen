@@ -77,7 +77,52 @@
       "episodeNumber": 574,
       "name": "Folge 574",
       "datePublished": "2022-01-12T20:15:00+01:00",
-      "sdDatePublished": "2021-12-08T23:22:00+01:00",
+      "sdDatePublished": "2021-12-18T07:10:07+00:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "FE04C92F-97DE-4D6C-BD83-7DB894AA7543": {
+      "@type": "Episode",
+      "episodeNumber": 575,
+      "name": "Folge 575",
+      "datePublished": "2022-02-23T20:15:00+01:00",
+      "sdDatePublished": "2021-12-18T07:12:05+00:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "BEA24471-D900-4338-AAB2-BB705A6D99BA": {
+      "@type": "Episode",
+      "episodeNumber": 576,
+      "name": "Folge 576",
+      "datePublished": "2022-03-16T20:15:00+01:00",
+      "sdDatePublished": "2021-12-18T07:13:03+00:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "74D6AA82-A1A3-4F91-9DC4-E06F79D6610D": {
+      "@type": "Episode",
+      "episodeNumber": 577,
+      "name": "Folge 577",
+      "datePublished": "2022-04-13T20:15:00+02:00",
+      "sdDatePublished": "2021-12-18T07:14:03+00:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "E0F9FE0B-3293-4BDB-91AC-97236C36E2DC": {
+      "@type": "Episode",
+      "episodeNumber": 578,
+      "name": "Folge 578",
+      "datePublished": "2022-05-11T20:15:00+02:00",
+      "sdDatePublished": "2021-12-18T07:15:35+00:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "1A5001A6-FC66-4A29-9852-145B6D9110C5": {
+      "@type": "Episode",
+      "episodeNumber": 579,
+      "name": "Folge 579",
+      "datePublished": "2022-06-01T20:15:00+02:00",
+      "sdDatePublished": "2021-12-18T07:16:07+00:00",
       "isRerun": false,
       "isSpinoff": false
     }
