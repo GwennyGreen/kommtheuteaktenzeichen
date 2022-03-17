@@ -506,23 +506,22 @@ One-time steps to configure 1Password CLI on macOS:
       printf '\0'
       exit 0
     fi
-    op get item \
-      --fields='Access Key ID,Secret Access Key' \
-      --vault=<your_vault_id_here> \
-      <your_item_id_here> \
-      | jq "$(cat << EOF
+    op item get --cache \
+      --fields 'Access Key ID,Secret Access Key' \
+      --format 'json' \
+      --vault #your_vault_id_here# \
+      #your_item_id_here# \
+      | jq '
         {
           Version: 1,
-          AccessKeyId: ."Access Key ID",
-          SecretAccessKey: ."Secret Access Key",
-        }
-    EOF
-        )"
+          AccessKeyId: .[0].value,
+          SecretAccessKey: .[1].value
+        }'
     ```
 
 5. In the 1Password for Mac GUI app, open the preferences and go to the _Advanced_ tab (it’s the rightmost one). Tick the checkboxes that enable UUID and JSON copying.
 
-6. Replace the fragments `<your_vault_id_here>` and `<your_item_id_here>` with the actual vault UUID and login item UUID. To obtain those UUIDs, consult the context menu of your login item.
+6. Replace the fragments `#your_vault_id_here#` and `#your_item_id_here#` with the actual vault UUID and login item UUID. To obtain those UUIDs, consult the context menu of your login item.
 
 7. Create a file `config` in your `~/.aws` directory if it’s not already there.
 
