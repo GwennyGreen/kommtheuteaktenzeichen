@@ -125,6 +125,15 @@
       "sdDatePublished": "2021-12-18T07:16:07+00:00",
       "isRerun": false,
       "isSpinoff": false
+    },
+    "51AB152C-3D2D-403C-B88F-D56CCCCA788E": {
+      "@type": "Episode",
+      "episodeNumber": 1,
+      "name": "Vermisst – Folge 1",
+      "datePublished": "2022-06-29T20:15:00+02:00",
+      "sdDatePublished": "2022-05-23T00:19:48+02:00",
+      "isRerun": false,
+      "isSpinoff": true
     }
   }
 }
