@@ -297,6 +297,92 @@ To create a new set of IAM credentials for deployment, follow these steps:
     ```
 
 
+## Creating and deploying a TLS certificate
+
+1. Log into the AWS Console as your personal IAM user. (For details,
+   see section _Creating an IAM user tied to a project contributor_.)
+
+2. Go to Route 53 and double-check that a hosted zone is present
+   and shows the domain name(s) of the site.
+
+3. Open AWS Certificate Manager.
+
+4. Change to the `us-east-1` region. (Mind that certificates are
+   always in `us-east-1`, no matter the region where the app itself
+   is deployed.)
+
+5. Double-check that no certificate is associated with the website.
+   If it has a valid certificate, skip the next step.
+
+6. Create a new certificate.
+
+7. In `zappa_settings.json`, set `certificate_arn` to the
+   certificate ARN. (The value is public. So don’t worry about
+   committing the file to source control.)
+
+8. Run `pipenv run zappa certify`.
+
+
+## Renewing the TLS certificate
+
+To view the TLS certificate as JSON, run:
+
+```bash
+aws acm describe-certificate \
+  --certificate-arn "$(jq -r .prod.certificate_arn zappa_settings.json)" \
+  --region 'us-east-1' \
+  | jq .
+```
+
+To view just the renewal status, run:
+
+```
+aws acm describe-certificate \
+  --certificate-arn "$(jq -r .prod.certificate_arn zappa_settings.json)" \
+  --region 'us-east-1' \
+  | jq .Certificate.RenewalSummary
+```
+
+To renew a certificate:
+
+1. Run the command line to view the renewal status (see above) and
+   confirm that it gives you an output where `ValidationStatus` has
+   some value other than `PENDING_VALIDATION`.
+
+2. Log into the AWS Console as your personal IAM user. (For details,
+   see section _Creating an IAM user tied to a project contributor_.)
+
+3. Change to the `us-east-1` region. (Mind that certificates are
+   always in `us-east-1`, no matter the region where the app itself
+   is deployed.)
+
+4. Open AWS Certificate Manager.
+
+5. Go to _List Certificates._
+
+6. Click on the certificate identifier.
+
+7. Double-check that the _Renewal Status_ (which is not the same
+   thing as _Status_) has some value other than _Success._
+   (For example: _Pending validation_)
+
+8. Under _Domains,_ click _Create records in Route 53._
+
+9. Confirm that at most a few hours later, the command line to
+   view the renewal status (see above) now gives you an output
+   where the value of `ValidationStatus` has changed
+   from `PENDING_VALIDATION` to `SUCCESS`.
+   (The `RenewalStatus` may remain at `PENDING_VALIDATION`.)
+
+10. Wait for the next business day.
+
+11. Confirm that you’ve received an email from AWS stating that
+    the certificate has been renewed. (The `RenewalStatus` should
+    also have changed to `SUCCESS` by now.) That’s it – you don’t
+    need to deploy anything because the existing certificate has
+    been renewed and remains deployed.
+
+
 ## Deployment
 
 To deploy the project to production, run:
