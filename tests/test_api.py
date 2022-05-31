@@ -6,7 +6,7 @@ from typing import Callable, Iterable
 import dateutil.tz
 import pytest
 
-import kha.api as api
+from kha import api
 from kha.episode import Episode
 
 

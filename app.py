@@ -6,8 +6,8 @@ from typing import Any, Dict
 import flask
 
 import kha.api
+from kha import settings
 from kha.format import formatter_for
-import kha.settings as settings
 
 
 locale.setlocale(locale.LC_ALL, settings.USER_LOCALE)
