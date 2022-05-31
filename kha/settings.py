@@ -62,6 +62,7 @@ POSITIVE_REACTIONS = [
     '🤩',
     '🦹🔫👮',
     '🆗🆒',
+    '🇺🇦 Slawa Ukrajini 🇺🇦',
 ]
 
 NEGATIVE_REACTIONS = [
