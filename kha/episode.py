@@ -138,5 +138,5 @@ class Episode:
                                  .isoformat(timespec='seconds'))),
             f'is_rerun={repr(self.is_rerun)}',
             f'is_spinoff={repr(self.is_spinoff)}',
-            f'tz={repr(self.timezone)}',
+            f'timezone={repr(self.timezone)}',
         ]) + ')'

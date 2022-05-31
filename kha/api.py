@@ -102,11 +102,14 @@ def next_episode(
     it loads episodes from the file `events.kha.json`, merges it
     with episodes found online and uses the result.
     """
+    unfiltered_episodes = episodes if episodes \
+        else all_episodes_from_store()
+
     filtered_sorted_episodes = sorted(
         [
             episode
             for episode
-            in (episodes if episodes else all_episodes())
+            in filter_eligible_episodes(unfiltered_episodes)
             if episode.runs_today_or_later(now=after)
         ],
         key=operator.attrgetter('date_published'),
@@ -131,33 +134,53 @@ def _merge(
     )
 
 
-def all_episodes() -> Iterable[Episode]:
+def filter_eligible_episodes(
+        unfiltered_episodes: Iterable[Episode]) \
+        -> Iterable[Episode]:
     """
-    Loads all known episodes from the backing store and merges them
-    with the episodes found online.
+    From a given list of unfiltered episodes, return eligible
+    episodes. An episode is eligible if and only if:
+    1. it is not a rerun;
+    2. it is not a spinoff, or it is followed only by spinoffs.
     Returns a list, sorted by start date.
     """
-    return (
-        episode
-        for episode in
-        all_episodes_from_store()
-        # _merge(
-        #     all_episodes_from_store(),
-        #     scrape_wunschliste(),
-        # )
-        if not(episode.is_rerun or episode.is_spinoff)
-    )
+    def last_published_date_ignoring_spinoffs() \
+            -> Optional[datetime]:
+        """
+        Of all start dates of known episodes, return the latest one,
+        ignoring spin-off episodes.
+        Return None if no such episode exists.
+        """
+        start_dates = [
+            episode.date_published
+            for episode in unfiltered_episodes
+            if not(episode.is_rerun or episode.is_spinoff)
+        ]
+        if not start_dates:
+            return None
+        return max(start_dates)
+
+    pivot_date = last_published_date_ignoring_spinoffs()
+    spinoff_episodes_wanted = not pivot_date
+
+    for episode in unfiltered_episodes:
+        if episode.is_rerun:
+            continue
+        if pivot_date and episode.date_published >= pivot_date:
+            spinoff_episodes_wanted = True
+        if spinoff_episodes_wanted or not episode.is_spinoff:
+            yield episode
 
 
-def all_episodes_from_store() -> List[Episode]:
+def all_episodes_from_store(client: Optional[S3Client] = None) \
+        -> List[Episode]:
     """
     Loads all episodes from the backing store and returns them,
     sorted by start date.
     """
     return sorted(
-        cast(
-            Iterable[Episode],
-            events_dict_from_store()['episodes'].values()),
+        cast(Iterable[Episode],
+             events_dict_from_store(client)['episodes'].values()),
         key=operator.attrgetter('date_published'),
     )
 
@@ -213,6 +236,20 @@ def events_dict_from_store(client: Optional[S3Client] = None) -> EventsDict:
         json.load(response['Body'],
                   object_hook=_deserialize_events_dict)
     )
+
+
+def list_eligible_episodes(client: Optional[S3Client] = None) \
+        -> None:
+    """
+    From all known episodes in the backing store, prints a list of
+    eligible episodes. An episode is eligible if and only if:
+    1. it is not a rerun;
+    2. it is not a spinoff, or it is followed only by spinoffs.
+    """
+    for episode \
+            in filter_eligible_episodes(
+                all_episodes_from_store(client)):
+        print(repr(episode))
 
 
 def print_episodes_dev(client: Optional[S3Client] = None) -> None:
