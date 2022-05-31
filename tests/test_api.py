@@ -62,7 +62,7 @@ def fixture_episode_566(
         .astimezone(timezone.utc),
         is_rerun=False,
         is_spinoff=False,
-        tz=local_timezone,
+        timezone=local_timezone,
     )
 
 
@@ -81,7 +81,7 @@ def fixture_episode_567(
         .astimezone(timezone.utc),
         is_rerun=False,
         is_spinoff=False,
-        tz=local_timezone,
+        timezone=local_timezone,
     )
 
 

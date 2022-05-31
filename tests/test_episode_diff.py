@@ -5,9 +5,7 @@ from datetime import datetime
 import pytest
 
 from kha.episode import Episode
-from kha.episode_diff import episode_diff
-from kha.episode_patchers.episode_adder import EpisodeAdder
-from kha.episode_patchers.episode_replacer import EpisodeReplacer
+from kha.episode_patchers.episode_diff import episode_diff
 from kha.episode_patchers.noop_patcher import NoopPatcher
 from kha.local_types import EventsDict, Uuid
 

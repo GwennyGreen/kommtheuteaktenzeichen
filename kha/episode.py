@@ -2,7 +2,7 @@
 
 """Single episode of a series."""
 
-from datetime import datetime, timezone, tzinfo
+from datetime import datetime, timezone as timezone_module, tzinfo
 from typing import Callable, Optional, Tuple, TypedDict, Union
 
 from dateutil.relativedelta import relativedelta
@@ -28,16 +28,16 @@ class Episode:
                  sd_date_published: datetime,
                  is_rerun: bool = False,
                  is_spinoff: bool = False,
-                 tz: Optional[tzinfo] = timezone.utc):
+                 timezone: Optional[tzinfo] = timezone_module.utc):
         self.episode_number: Union[int, str] = episode_number
         self.name: str = name
         self.date_published: datetime = \
-            date_published.astimezone(timezone.utc)
+            date_published.astimezone(timezone_module.utc)
         self.sd_date_published: datetime = \
-            sd_date_published.astimezone(timezone.utc)
+            sd_date_published.astimezone(timezone_module.utc)
         self.is_rerun = is_rerun
         self.is_spinoff = is_spinoff
-        self.timezone = tz
+        self.timezone = timezone
 
     @property
     def domain_key(self) \
@@ -107,7 +107,7 @@ class Episode:
             + relativedelta(days=+1,
                             hour=0, minute=0, second=0,
                             microsecond=0)
-        return local_midnight.astimezone(timezone.utc)
+        return local_midnight.astimezone(timezone_module.utc)
 
     def start_of_current_day(
         self,
@@ -124,15 +124,16 @@ class Episode:
             + relativedelta(days=-1)
 
     def __repr__(self) -> str:
+        brackets = '({})'
         return 'Episode(' + ', '.join([
             repr(self.episode_number),
             f'name={repr(self.name)}',
             'date_published=datetime.datetime.fromisoformat'
-            + '({})'.format(repr(self
+            + brackets.format(repr(self
                                  .local_date_published()
                                  .isoformat(timespec='seconds'))),
             'sd_date_published=datetime.datetime.fromisoformat'
-            + '({})'.format(repr(self
+            + brackets.format(repr(self
                                  .local_sd_date_published()
                                  .isoformat(timespec='seconds'))),
             f'is_rerun={repr(self.is_rerun)}',

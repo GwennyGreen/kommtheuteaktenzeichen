@@ -79,7 +79,7 @@ def scrape_wunschliste(html: Optional[str] = None) \
             sd_date_published=datetime.now(),
             is_rerun=bool(raw_episode_dict['rerun']),
             is_spinoff=not raw_episode_dict['name'].startswith('Folge'),
-            tz=WUNSCHLISTE_IMPLIED_TIMEZONE,
+            timezone=WUNSCHLISTE_IMPLIED_TIMEZONE,
         )
 
     for episode_html, episode_match \

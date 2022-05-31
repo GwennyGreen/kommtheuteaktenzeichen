@@ -178,7 +178,7 @@ def _deserialize_events_dict(obj: Dict[str, Any]) \
                 .astimezone(timezone.utc),
                 is_rerun=episode_dict['isRerun'],
                 is_spinoff=episode_dict['isSpinoff'],
-                tz=USER_TIMEZONE,
+                timezone=USER_TIMEZONE,
             )
         raise RuntimeError(f'Unknown type `{obj["@type"]}`')
     return obj
