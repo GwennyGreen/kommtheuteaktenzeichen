@@ -134,6 +134,15 @@
       "sdDatePublished": "2022-05-23T00:19:48+02:00",
       "isRerun": false,
       "isSpinoff": true
+    },
+    "983B5C07-DBC8-4A9F-BEA5-B2727AF49E90": {
+      "@type": "Episode",
+      "episodeNumber": 1,
+      "name": "Gelöst – Folge 1",
+      "datePublished": "2022-08-05T21:15:00+02:00",
+      "sdDatePublished": "2022-06-20T15:48:58+02:00",
+      "isRerun": false,
+      "isSpinoff": true
     }
   }
 }
