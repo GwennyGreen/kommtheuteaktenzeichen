@@ -4,7 +4,8 @@ from datetime import datetime, timezone
 import json
 import operator
 import os
-from typing import Any, Callable, Dict, Iterable, List, Optional, Union, cast
+from collections.abc import Callable, Iterable
+from typing import Any, Optional, Union, cast
 
 import boto3
 from mypy_boto3_s3.client import S3Client
@@ -123,7 +124,7 @@ def next_episode(
 def _merge(
     episodes: Iterable[Episode],
     new_episodes: Iterable[Episode],
-) -> List[Episode]:
+) -> list[Episode]:
     """
     Merges existing and new episodes together.
     Returns a list, sorted by start date.
@@ -173,7 +174,7 @@ def filter_eligible_episodes(
 
 
 def all_episodes_from_store(client: Optional[S3Client] = None) \
-        -> List[Episode]:
+        -> list[Episode]:
     """
     Loads all episodes from the backing store and returns them,
     sorted by start date.
@@ -185,8 +186,8 @@ def all_episodes_from_store(client: Optional[S3Client] = None) \
     )
 
 
-def _deserialize_events_dict(obj: Dict[str, Any]) \
-        -> Union[Dict[str, Any], Episode]:
+def _deserialize_events_dict(obj: dict[str, Any]) \
+        -> Union[dict[str, Any], Episode]:
     if '@type' in obj:
         if obj['@type'] == 'Episode':
             episode_dict = cast(EpisodeDict, obj)

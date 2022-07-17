@@ -1,7 +1,7 @@
 """Package-scoped type annotations."""
 
 from datetime import datetime
-from typing import Dict, Literal, NewType, Optional, TypedDict
+from typing import Literal, NewType, Optional, TypedDict
 
 from .episode import Episode
 from .verdict import Verdict
@@ -19,7 +19,7 @@ Uuid = NewType('Uuid', str)
 
 class EventsDict(TypedDict):
     """Top-level dictionary."""
-    episodes: Dict[Uuid, Episode]
+    episodes: dict[Uuid, Episode]
 
 
 class PageContextDict(TypedDict):

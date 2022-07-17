@@ -1,7 +1,8 @@
 # pylint: disable=missing-function-docstring, missing-module-docstring
 
+from collections.abc import Iterable
 from datetime import datetime, timezone, tzinfo
-from typing import Callable, Iterable
+from typing import Callable
 from zoneinfo import ZoneInfo
 
 import pytest

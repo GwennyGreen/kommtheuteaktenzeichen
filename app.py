@@ -1,7 +1,7 @@
 """The main app."""
 
 import locale
-from typing import Any, Dict
+from typing import Any
 
 import flask
 
@@ -23,7 +23,7 @@ def main() -> str:
 
 
 @app.route('/site.webmanifest')
-def webmanifest() -> Dict[str, Any]:
+def webmanifest() -> dict[str, Any]:
     """A web app manifest for favicons and other things."""
     return settings.FAVICONS_MANIFEST
 
