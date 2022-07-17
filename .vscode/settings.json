@@ -27,9 +27,13 @@
   ],
   "python.defaultInterpreterPath": "./.venv/bin/python",
   "python.pythonPath": "./.venv/bin/python",
+  "python.linting.enabled": true,
+  "python.linting.pylintArgs": [
+    "--enable-all-extensions"
+  ],
+  "python.linting.pylintCategorySeverity.refactor": "Warning",
   "python.linting.pylintEnabled": true,
   "python.linting.pylintPath": "./.venv/bin/pylint",
-  "python.linting.enabled": true,
   "python.testing.pytestArgs": [
     "tests"
   ],
