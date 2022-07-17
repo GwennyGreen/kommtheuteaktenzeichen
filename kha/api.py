@@ -50,8 +50,7 @@ def check(
     it loads episodes from the file `events.kha.json`, merges it
     with episodes found online and uses the result.
     """
-    episode = next_episode(episodes=episodes, after=now)
-    if episode is None:
+    if (episode := next_episode(episodes=episodes, after=now)) is None:
         return EpisodeUnknownResponse(
             sd_date_published=IsoDatetimeStr(
                 now()
