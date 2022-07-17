@@ -1,9 +1,10 @@
-# pylint: disable=missing-function-docstring, missing-module-docstring, no-self-use
+# pylint: disable=missing-function-docstring, missing-module-docstring
 
+from collections.abc import Iterable
 from datetime import datetime, timezone, tzinfo
-from typing import Callable, Iterable
+from typing import Callable
+from zoneinfo import ZoneInfo
 
-import dateutil.tz
 import pytest
 
 from kha import api
@@ -30,7 +31,7 @@ def fixture_after_episode_spinoff_1() -> Callable[[], datetime]:
 
 @pytest.fixture(name='local_timezone')
 def fixture_local_timezone() -> tzinfo:
-    local_timezone = dateutil.tz.gettz('Europe/Berlin')
+    local_timezone = ZoneInfo('Europe/Berlin')
     assert local_timezone is not None
     return local_timezone
 

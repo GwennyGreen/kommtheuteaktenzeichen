@@ -21,10 +21,12 @@ pylint = "~=2.9"
 pytest = "*"
 types-python-dateutil = "*"
 types-requests = "*"
-zappa = "*"
+zappa = "~=0.54.2"
 
 [requires]
-python_version = "3.8"
+# Caution: always keep this `python_version` setting consistent with
+# the value of the `runtime` property in `zappa_settings.json`.
+python_version = "3.9"
 
 [scripts]
 cli = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store-dev python kha"

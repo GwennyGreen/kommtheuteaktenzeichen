@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-import dateutil.tz
+from zoneinfo import ZoneInfo
 
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 PACKAGE_ROOT = Path(__file__).parent.absolute()
@@ -17,7 +17,7 @@ EVENTS_JSON_FILENAME = 'events.kha.json'
 LOCAL_EVENTS_JSON_PATH = \
     PROJECT_ROOT / 'etc' / EVENTS_JSON_FILENAME
 
-USER_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
+USER_TIMEZONE = ZoneInfo('Europe/Berlin')
 USER_LOCALE = 'de_DE'
 
 WUNSCHLISTE_URL = 'https://www.wunschliste.de/ajax/epg_liste.pl'
@@ -25,7 +25,7 @@ WUNSCHLISTE_QUERY_PARAMETERS = {
     's': '1187',
     'station': '2',
 }
-WUNSCHLISTE_IMPLIED_TIMEZONE = dateutil.tz.gettz('Europe/Berlin')
+WUNSCHLISTE_IMPLIED_TIMEZONE = ZoneInfo('Europe/Berlin')
 
 
 FAVICONS_MANIFEST = {

@@ -2,8 +2,9 @@
 
 """Single episode of a series."""
 
+from collections.abc import Callable
 from datetime import datetime, timezone as timezone_module, tzinfo
-from typing import Callable, Optional, Tuple, TypedDict, Union
+from typing import Optional, TypedDict, Union
 
 from dateutil.relativedelta import relativedelta
 
@@ -41,7 +42,7 @@ class Episode:
 
     @property
     def domain_key(self) \
-            -> Tuple[Union[int, str], bool, bool]:
+            -> tuple[Union[int, str], bool, bool]:
         """
         Domain key to identify an episode.
         Two episodes are the same thing if and only if they have

@@ -2,7 +2,9 @@
 
 from datetime import datetime
 import re
-from typing import Dict, Iterable, Match, Optional, Tuple
+from re import Match
+from collections.abc import Iterable
+from typing import Optional
 
 import requests
 
@@ -46,7 +48,7 @@ def scrape_wunschliste(html: Optional[str] = None) \
         return response.text
 
     def parse_episodes(html_source: str) \
-            -> Iterable[Tuple[str, Optional[Match[str]]]]:
+            -> Iterable[tuple[str, Optional[Match[str]]]]:
         return (
             (
                 episode_html,
@@ -58,13 +60,13 @@ def scrape_wunschliste(html: Optional[str] = None) \
                           html_source)
         )
 
-    def cleanup_html(html_dict: Dict[str, str]) -> Dict[str, str]:
+    def cleanup_html(html_dict: dict[str, str]) -> dict[str, str]:
         return {
             key: re.sub(r'(?m)(?:\s|\\n)+(?=\s|\\n)', '', value)
             for key, value in html_dict.items()
         }
 
-    def to_episode(raw_episode_dict: Dict[str, str]) -> Episode:
+    def to_episode(raw_episode_dict: dict[str, str]) -> Episode:
         return Episode(
             int(raw_episode_dict['episode_number']),
             name=raw_episode_dict['name'],

@@ -23,7 +23,7 @@
     "project_name": "kha",
     "role_name": "kha-prod-RestrictedAccessRole",
     "route53_enabled": false,
-    "runtime": "python3.8",
+    "runtime": "python3.9",
     "s3_bucket": "kha-store"
   }
 }
