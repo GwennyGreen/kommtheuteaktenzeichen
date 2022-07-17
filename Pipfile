@@ -24,6 +24,8 @@ types-requests = "*"
 zappa = "~=0.54.2"
 
 [requires]
+# Caution: always keep this `python_version` setting consistent with
+# the value of the `runtime` property in `zappa_settings.json`.
 python_version = "3.9"
 
 [scripts]
