@@ -2,8 +2,8 @@
 
 from datetime import datetime, timezone, tzinfo
 from typing import Callable, Iterable
+from zoneinfo import ZoneInfo
 
-import dateutil.tz
 import pytest
 
 from kha import api
@@ -42,7 +42,7 @@ def fixture_a_bit_past_midnight() -> Callable[[], datetime]:
 
 @pytest.fixture(name='local_timezone')
 def fixture_local_timezone() -> tzinfo:
-    local_timezone = dateutil.tz.gettz('Europe/Berlin')
+    local_timezone = ZoneInfo('Europe/Berlin')
     assert local_timezone is not None
     return local_timezone
 
