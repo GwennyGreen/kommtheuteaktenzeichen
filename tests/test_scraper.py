@@ -1,8 +1,7 @@
-# pylint: disable=missing-function-docstring, missing-module-docstring, no-self-use
+# pylint: disable=missing-function-docstring, missing-module-docstring
 
 import pytest
 
-from kha.episode import Episode
 import kha.scraper
 
 @pytest.fixture(name='episode_569_html')

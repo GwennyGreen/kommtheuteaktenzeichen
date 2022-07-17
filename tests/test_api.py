@@ -1,4 +1,4 @@
-# pylint: disable=missing-function-docstring, missing-module-docstring, no-self-use
+# pylint: disable=missing-function-docstring, missing-module-docstring
 
 from datetime import datetime, timezone, tzinfo
 from typing import Callable, Iterable

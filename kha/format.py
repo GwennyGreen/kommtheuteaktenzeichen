@@ -25,7 +25,6 @@ def formatter_for(__response: Union[
     Returns a formatter that can transform an EpisodeCheckResponse
     into a context dict for rendering the HTML template.
     """
-    ...
 
 
 @formatter_for.register
