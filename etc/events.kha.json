@@ -143,6 +143,24 @@
       "sdDatePublished": "2022-06-20T15:48:58+02:00",
       "isRerun": false,
       "isSpinoff": true
+    },
+    "A6216A8C-8245-465D-A827-2D5D2C601AC5": {
+      "@type": "Episode",
+      "episodeNumber": 581,
+      "name": "Folge 581",
+      "datePublished": "2022-08-24T20:15:00+02:00",
+      "sdDatePublished": "2022-08-14T00:46:19+02:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "4D2B88A3-D669-4A8E-8138-FC5D8EB0D57B": {
+      "@type": "Episode",
+      "episodeNumber": 582,
+      "name": "Folge 582",
+      "datePublished": "2022-09-21T20:15:00+02:00",
+      "sdDatePublished": "2022-08-14T00:46:19+02:00",
+      "isRerun": false,
+      "isSpinoff": false
     }
   }
 }
