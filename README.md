@@ -8,7 +8,7 @@ To set up Kommt heute Aktenzeichen, you need four things:
 
 2. Python (any version).
 
-3. The Python dependency manager `pipenv`.
+3. The Python dependency manager `poetry`.
 
 4. A set of AWS credentials.
 
@@ -30,6 +30,16 @@ To install `pyenv` on macOS, run:
 brew install pyenv
 ```
 
+To install `pyenv` on Linux or WSL2, first make sure Python 3 is
+installed. Then follow the _Basic GitHub Checkout_ method described
+at [github.com/pyenv/pyenv](https://github.com/pyenv/pyenv#basic-github-checkout).
+
+To verify `pyenv` is working, run:
+
+```
+pyenv --version
+```
+
 ### Checking your system-wide Python installation
 
 Make sure you have Python (any version) installed on your system.
@@ -48,20 +58,54 @@ pip3 --version
 
 Proceed after you’ve confirmed one of those to work.
 
-### Installing pipenv
+### Installing Poetry
 
-Install `pipenv` as described under https://pipenv.pypa.io/en/latest/install/#installing-pipenv.
+You’ll need `poetry` to manage development dependencies and the venv.
 
-### Installing local dependencies
+To install Poetry on Windows, use one of the
+[installation methods](https://python-poetry.org/docs/master/#installing-with-the-official-installer)
+described in Poetry’s documentation.
 
-- Go to the kommtheuteaktenzeichen directory.
-
-- Run the following command:
+To install Poetry on macOS, run:
 
 ```
-pipenv install -d
+brew install poetry
 ```
 
+If you’re on Linux or WSL2, use your system package manager to
+install Poetry.
+
+Alternatively, use one of the
+[installation methods](https://python-poetry.org/docs/master/#installing-with-the-official-installer)
+described in Poetry’s documentation.
+
+#### Checking your Poetry installation
+
+To verify Poetry is working, run:
+
+```
+poetry --version
+```
+
+### Setting up your virtual environment
+
+To set up your virtual environment, follow these steps:
+
+1. Go to the project root directory.
+
+2. Run `pyenv install -s`.
+
+3. Run `pyenv exec pip install poetry`.
+
+4. Run `pyenv exec poetry install`.
+
+You need to do the above steps only once.
+
+To update your dependencies after a `git pull`, run `poetry update`.
+
+## Development scripts and tasks
+
+To see a list of available tasks, run: `poetry run poe tasks`
 
 ## Visual Studio Code integration
 
@@ -74,6 +118,8 @@ If you’re using VS Code, we recommend that you install a couple of extensions:
 - [Draw.io Integration extension](vscode:extension/hediet.vscode-drawio)
 
 - [EditorConfig extension](vscode:extension/EditorConfig.EditorConfig)
+
+- [Even Better TOML](vscode:extension/tamasfe.even-better-toml)
 
 - [Prettier extension](vscode:extension/esbenp.prettier-vscode)
 
@@ -94,7 +140,7 @@ In VS Code, you may prefer to use the _Run Task_ command instead of the various
 To launch the web server locally, run:
 
 ```
-pipenv run server
+poetry run poe server
 ```
 
 Then point your browser to [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
@@ -108,7 +154,7 @@ Note: this local server is connected to the development bucket, not the producti
 To do a quick check whether Aktenzeichen runs today, run:
 
 ```
-pipenv run cli check
+poetry run poe cli check
 ```
 
 This will print something like:
@@ -146,13 +192,13 @@ Note: the CLI is connected to the development bucket, not the production one.
 To execute the tests, run:
 
 ```
-pipenv run tests
+poetry run poe tests
 ```
 
 To execute a single test, run e. g.:
 
 ```
-pipenv run tests -vv tests/test_api.py::test_next_start
+poetry run poe tests -vv tests/test_api.py::test_next_start
 ```
 
 To execute tests from VS Code, use the test runner built into the Python extension.
@@ -163,7 +209,7 @@ You don’t need _Run tasks_ for executing tests.
 To execute the linter, run:
 
 ```
-pipenv run linter
+poetry run poe linter
 ```
 
 Linting should just work in VS Code. If you want to run the linter manually, run the _Python: Run Linting_ command.
@@ -175,7 +221,7 @@ Specifically, you don’t need _Run tasks_ for linting.
 To execute the static type check, run:
 
 ```
-pipenv run typecheck
+poetry run poe typecheck
 ```
 
 ### Uploading a local events.kha.json file to the dev bucket
@@ -183,7 +229,7 @@ pipenv run typecheck
 To upload `etc/events.kha.json` to the development bucket, run:
 
 ```
-pipenv run update-dev-json
+poetry run poe update-dev-json
 ```
 
 This allows you to try out a modified JSON file quickly during
@@ -207,7 +253,6 @@ Running that command line will overwrite the existing JSON in
 production, and will break the production website if the JSON is
 faulty.
 
-
 ## Maintenance
 
 ### Refreshing dependencies
@@ -215,16 +260,16 @@ faulty.
 If you get errors after a Git pull, refresh your dependencies:
 
 ```
-pipenv install -d
+poetry update
 ```
 
 ### Rebuilding the virtual environment
 
-If you’ve run `pipenv install -d` and you still get errors, rebuild
+If you’ve run `poetry update` and you still get errors, rebuild
 the virtual environment:
 
 ```
-pipenv --rm && pipenv install -d
+poetry install
 ```
 
 ### Checking dependencies for vulnerabilities
@@ -232,7 +277,7 @@ pipenv --rm && pipenv install -d
 To check Kommt heute Aktenzeichen’s dependencies for known vulnerabilities, run:
 
 ```
-pipenv check
+poetry run poe check
 ```
 
 ### Checking dependencies for compatible updates
@@ -240,7 +285,7 @@ pipenv check
 To check Kommt heute Aktenzeichen’s dependencies for compatible updates, run:
 
 ```
-pipenv update --dry-run
+poetry update --dry-run
 ```
 
 ### Creating an IAM user tied to a project contributor
@@ -329,7 +374,7 @@ To create a new set of IAM credentials for deployment, follow these steps:
    certificate ARN. (The value is public. So don’t worry about
    committing the file to source control.)
 
-8. Run `pipenv run zappa certify`.
+8. Run `poetry run zappa certify`.
 
 
 ## Renewing the TLS certificate
@@ -397,13 +442,13 @@ To renew a certificate:
 To deploy the project to production, run:
 
 ```
-pipenv run deploy
+poetry run poe deploy
 ```
 
 To re-deploy to production, run:
 
 ```
-pipenv run update
+poetry run poe update
 ```
 
 
@@ -447,7 +492,7 @@ Steps to set up AWS from scratch:
 - Set up Zappa for your AWS account:
 
     ```bash
-    pipenv run zappa init
+    poetry run zappa init
     ```
 
 - Name the environment `prod`.

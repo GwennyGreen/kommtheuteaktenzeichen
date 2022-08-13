@@ -1,3 +1,65 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta:__legacy__"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "kha"
+version = "0.1.0"
+description = "Kommt heute Aktenzeichen?"
+authors = [
+    "Anna Pellegrino <hallo@annapellegrino.de>",
+    "Claudia Pellegrino <clau@tiqua.de>",
+]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+# We’re pinning Python to an exact minor version for compatibility.
+# Caution: always keep the major and minor number part in sync with
+# the `runtime` property in `zappa_settings.json`.
+python = "~3.9.0"
+
+boto3 = "~=1.17"
+colorama = "*"
+fire = "*"
+Flask = "~=2.0"
+MarkupSafe = "~=2.0"
+python-dateutil = "*"
+requests = "~=2.25"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "*"
+boto3-stubs = { version = "*", extras = ["s3"] }
+mypy = "~=0.812"
+poethepoet = "^0.16.0"
+pylint = "~=2.9"
+pytest = "*"
+types-python-dateutil = "*"
+types-requests = "*"
+zappa = "~=0.54.2"
+
+[tool.poe]
+verbosity = -1
+
+[tool.poe.tasks]
+tasks.cmd = "poetry run poe -v"
+tasks.help = "List available tasks"
+cli.cmd = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store-dev python kha"
+cli.help = "Run the command line interface"
+deploy.cmd = "zappa deploy prod"
+deploy.help = "Initially deploy to kommtheuteaktenzeichen.de"
+linter.cmd = "pylint --enable-all-extensions kha"
+linter.help = "Check for style violations"
+scraper.cmd = "python -c 'import kha.scraper\nfor episode in kha.scraper.scrape_wunschliste(): print(repr(episode))'"
+scraper.help = "Scrape from web interface"
+server.cmd = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store-dev flask run"
+server.help = "Run local server"
+tail.cmd = "zappa tail prod"
+tail.help = "Show (tail) production logs"
+tests.cmd = "pytest"
+tests.help = "Run test suite"
+typecheck.cmd = "mypy"
+typecheck.help = "Run static type checker"
+update.cmd = "zappa update prod"
+update.help = "Deploy to (and replace) kommtheuteaktenzeichen.de"
+update-dev-json.cmd = "aws --profile=kha-restricted s3 cp etc/events.kha.json s3://kha-store-dev/events.kha.json"
+update-dev-json.help = "Upload events.kha.json to development S3 bucket"
