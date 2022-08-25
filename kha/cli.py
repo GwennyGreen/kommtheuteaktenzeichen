@@ -2,7 +2,7 @@
 
 import fire
 
-from kha import api, fire_workarounds
+from . import api, fire_workarounds
 
 
 def run() -> None:
