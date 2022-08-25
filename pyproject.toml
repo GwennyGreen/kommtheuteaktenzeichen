@@ -43,7 +43,7 @@ verbosity = -1
 [tool.poe.tasks]
 tasks.cmd = "poe -v"
 tasks.help = "List available tasks"
-cli.cmd = "python kha"
+cli.script = "kha.cli:run"
 cli.env = { AWS_PROFILE = "kha-restricted", KHA_DATA_S3_BUCKET = "kha-store-dev" }
 cli.help = "Run the command line interface"
 deploy.cmd = "zappa deploy prod"
