@@ -50,7 +50,7 @@ deploy.cmd = "zappa deploy prod"
 deploy.help = "Initially deploy to kommtheuteaktenzeichen.de"
 linter.cmd = "pylint --enable-all-extensions kha"
 linter.help = "Check for style violations"
-scraper.cmd = "python -c 'import kha.scraper\nfor episode in kha.scraper.scrape_wunschliste(): print(repr(episode))'"
+scraper.script = "scripts.scraper:run"
 scraper.help = "Scrape from web interface"
 server.cmd = "flask run"
 server.env = { AWS_PROFILE = "kha-restricted", KHA_DATA_S3_BUCKET = "kha-store-dev" }
