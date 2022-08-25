@@ -229,7 +229,7 @@ poetry run poe typecheck
 To upload `etc/events.kha.json` to the development bucket, run:
 
 ```
-poetry run poe update-dev-json
+poetry run poe upload-events
 ```
 
 This allows you to try out a modified JSON file quickly during
@@ -237,16 +237,10 @@ development.
 
 ### Uploading a local events.kha.json file to the prod bucket
 
-Uploading a local `events.kha.json` file to the production bucket is
-usually not necessary. The scheduled scraper should already keep the
-file updated.
-
-If you want to upload `events.kha.json` to production anyway,
-substitute `PATH_TO_EVENTS_KHA_JSON` in the following command line
-with the full path to the file, then run the modified command line.
+To upload `etc/events.kha.json` to the production bucket, run:
 
 ```
-aws --profile=kha-deploy s3 cp PATH_TO_EVENTS_KHA_JSON s3://kha-store/events.kha.json
+poetry run poe upload-events --to-bucket=kha-store --profile=kha-deploy
 ```
 
 Running that command line will overwrite the existing JSON in

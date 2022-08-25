@@ -30,7 +30,7 @@ requests = "~=2.25"
 autopep8 = "*"
 boto3-stubs = { version = "*", extras = ["s3"] }
 mypy = "~=0.812"
-poethepoet = "^0.16.0"
+poethepoet = "~=0.16"
 pylint = "~=2.9"
 pytest = "*"
 types-python-dateutil = "*"
@@ -41,17 +41,19 @@ zappa = "~=0.54.2"
 verbosity = -1
 
 [tool.poe.tasks]
-tasks.cmd = "poetry run poe -v"
+tasks.cmd = "poe -v"
 tasks.help = "List available tasks"
-cli.cmd = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store-dev python kha"
+cli.cmd = "python kha"
+cli.env = { AWS_PROFILE = "kha-restricted", KHA_DATA_S3_BUCKET = "kha-store-dev" }
 cli.help = "Run the command line interface"
 deploy.cmd = "zappa deploy prod"
 deploy.help = "Initially deploy to kommtheuteaktenzeichen.de"
 linter.cmd = "pylint --enable-all-extensions kha"
 linter.help = "Check for style violations"
-scraper.cmd = "python -c 'import kha.scraper\nfor episode in kha.scraper.scrape_wunschliste(): print(repr(episode))'"
+scraper.script = "scripts.scraper:run"
 scraper.help = "Scrape from web interface"
-server.cmd = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store-dev flask run"
+server.cmd = "flask run"
+server.env = { AWS_PROFILE = "kha-restricted", KHA_DATA_S3_BUCKET = "kha-store-dev" }
 server.help = "Run local server"
 tail.cmd = "zappa tail prod"
 tail.help = "Show (tail) production logs"
@@ -61,5 +63,25 @@ typecheck.cmd = "mypy"
 typecheck.help = "Run static type checker"
 update.cmd = "zappa update prod"
 update.help = "Deploy to (and replace) kommtheuteaktenzeichen.de"
-update-dev-json.cmd = "aws --profile=kha-restricted s3 cp etc/events.kha.json s3://kha-store-dev/events.kha.json"
-update-dev-json.help = "Upload events.kha.json to development S3 bucket"
+
+[tool.poe.tasks.upload-events]
+script = "scripts.s3:upload_events"
+help = "Upload file to S3 bucket (will overwrite `events.kha.json`)"
+
+[[tool.poe.tasks.upload-events.args]]
+name = "source_json"
+options = ["-f", "--file"]
+help = "File to upload"
+default = "etc/events.kha.json"
+
+[[tool.poe.tasks.upload-events.args]]
+name = "target_bucket"
+options = ["-t", "--to-bucket"]
+help = "Name of the S3 bucket to receive the file"
+default = "kha-store-dev"
+
+[[tool.poe.tasks.upload-events.args]]
+name = "profile_name"
+options = ["-p", "--profile"]
+help = "Name of the AWS profile to use"
+default = "kha-restricted"
