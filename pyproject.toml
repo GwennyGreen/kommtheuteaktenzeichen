@@ -63,5 +63,25 @@ typecheck.cmd = "mypy"
 typecheck.help = "Run static type checker"
 update.cmd = "zappa update prod"
 update.help = "Deploy to (and replace) kommtheuteaktenzeichen.de"
-update-dev-json.cmd = "aws --profile=kha-restricted s3 cp etc/events.kha.json s3://kha-store-dev/events.kha.json"
-update-dev-json.help = "Upload events.kha.json to development S3 bucket"
+
+[tool.poe.tasks.upload-events]
+script = "scripts.s3:upload_events"
+help = "Upload file to S3 bucket (will overwrite `events.kha.json`)"
+
+[[tool.poe.tasks.upload-events.args]]
+name = "source_json"
+options = ["-f", "--file"]
+help = "File to upload"
+default = "etc/events.kha.json"
+
+[[tool.poe.tasks.upload-events.args]]
+name = "target_bucket"
+options = ["-t", "--to-bucket"]
+help = "Name of the S3 bucket to receive the file"
+default = "kha-store-dev"
+
+[[tool.poe.tasks.upload-events.args]]
+name = "profile_name"
+options = ["-p", "--profile"]
+help = "Name of the AWS profile to use"
+default = "kha-restricted"
