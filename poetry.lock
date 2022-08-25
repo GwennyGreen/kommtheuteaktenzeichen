@@ -1036,6 +1036,14 @@ optional = false
 python-versions = ">=3.7,<4.0"
 
 [[package]]
+name = "types-colorama"
+version = "0.4.15"
+description = "Typing stubs for colorama"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "types-python-dateutil"
 version = "2.8.19"
 description = "Typing stubs for python-dateutil"
@@ -1164,7 +1172,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.9.0"
-content-hash = "d91a6fd1440058fe95e119c80633fe5a2eb1ee362a647c732e8eec9f9611f86e"
+content-hash = "89fcf661f5a95122c283a376dd83df5a2ca25fe22e4c64b7b1b3fca6bf5c40ed"
 
 [metadata.files]
 argcomplete = [
@@ -1533,6 +1541,10 @@ troposphere = [
 types-awscrt = [
     {file = "types-awscrt-0.14.0.tar.gz", hash = "sha256:1c8a4fef3ec83ef30740500e3a30299014d7a5aad82c9e2f2dea188a427137c6"},
     {file = "types_awscrt-0.14.0-py3-none-any.whl", hash = "sha256:5887a007f020c3950861842f7d98a06a922cb4a2290fa0e5df71fb271a4ab9c6"},
+]
+types-colorama = [
+    {file = "types-colorama-0.4.15.tar.gz", hash = "sha256:fd128b1e32f3fecec5f09df4366d21498ee86ea31fcf8b4e8f1ade6d0bbf9832"},
+    {file = "types_colorama-0.4.15-py3-none-any.whl", hash = "sha256:9cdc88dcde9e8ebafb2fdfaf5cee260452f93e5c57eb5d8b2a7f65b836d4e5d0"},
 ]
 types-python-dateutil = [
     {file = "types-python-dateutil-2.8.19.tar.gz", hash = "sha256:bfd3eb39c7253aea4ba23b10f69b017d30b013662bb4be4ab48b20bbd763f309"},

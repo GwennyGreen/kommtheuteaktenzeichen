@@ -1,12 +1,17 @@
 """Entry point for the command line interface."""
 
-import fire
+import sys
+
+import fire  # type: ignore
 
 from . import api, fire_workarounds
 
 
-def run() -> None:
+def run(*args: str) -> None:
     """Runs the command line interface."""
+    if not args:
+        args = tuple(sys.argv[1:])
+
     fire_workarounds.apply()
     fire.Fire({
         'check': api.check_episode,
@@ -14,5 +19,6 @@ def run() -> None:
         'print': {
             'dev': api.print_episodes_dev,
             'prod': api.print_episodes_prod,
-        },
-    })
+        }
+    }, command=args
+    )
