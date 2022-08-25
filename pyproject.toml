@@ -30,7 +30,7 @@ requests = "~=2.25"
 autopep8 = "*"
 boto3-stubs = { version = "*", extras = ["s3"] }
 mypy = "~=0.812"
-poethepoet = "^0.16.0"
+poethepoet = "~=0.16"
 pylint = "~=2.9"
 pytest = "*"
 types-python-dateutil = "*"
