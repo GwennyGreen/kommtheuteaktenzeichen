@@ -41,7 +41,7 @@ zappa = "~=0.54.2"
 verbosity = -1
 
 [tool.poe.tasks]
-tasks.cmd = "poetry run poe -v"
+tasks.cmd = "poe -v"
 tasks.help = "List available tasks"
 cli.cmd = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store-dev python kha"
 cli.help = "Run the command line interface"
