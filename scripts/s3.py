@@ -1,6 +1,9 @@
 """Script to manage S3 objects"""
 
+import sys
+
 import boto3
+from botocore import exceptions
 
 from kha.settings import EVENTS_JSON_FILENAME
 
@@ -20,8 +23,12 @@ def upload_events(source_json: str,
     :param `profile_name`:
         Name of the AWS profile to use.
     """
-    s3_client = boto3.Session(profile_name=profile_name) \
-        .client('s3')
+    session = boto3.Session(profile_name=profile_name)
+    try:
+        s3_client = session.client('s3')
+    except exceptions.CredentialRetrievalError as error:
+        print(error, file=sys.stderr)
+        sys.exit(1)
     print(f'Uploading {source_json} to bucket: {target_bucket}')
     s3_client.upload_file(Filename=source_json,
                           Bucket=target_bucket,
