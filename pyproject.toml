@@ -43,7 +43,8 @@ verbosity = -1
 [tool.poe.tasks]
 tasks.cmd = "poe -v"
 tasks.help = "List available tasks"
-cli.cmd = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store-dev python kha"
+cli.cmd = "python kha"
+cli.env = { AWS_PROFILE = "kha-restricted", KHA_DATA_S3_BUCKET = "kha-store-dev" }
 cli.help = "Run the command line interface"
 deploy.cmd = "zappa deploy prod"
 deploy.help = "Initially deploy to kommtheuteaktenzeichen.de"
@@ -51,7 +52,8 @@ linter.cmd = "pylint --enable-all-extensions kha"
 linter.help = "Check for style violations"
 scraper.cmd = "python -c 'import kha.scraper\nfor episode in kha.scraper.scrape_wunschliste(): print(repr(episode))'"
 scraper.help = "Scrape from web interface"
-server.cmd = "env AWS_PROFILE=kha-restricted KHA_DATA_S3_BUCKET=kha-store-dev flask run"
+server.cmd = "flask run"
+server.env = { AWS_PROFILE = "kha-restricted", KHA_DATA_S3_BUCKET = "kha-store-dev" }
 server.help = "Run local server"
 tail.cmd = "zappa tail prod"
 tail.help = "Show (tail) production logs"
