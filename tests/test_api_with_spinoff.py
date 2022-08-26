@@ -1,9 +1,7 @@
 # pylint: disable=missing-function-docstring, missing-module-docstring
 
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from datetime import datetime, timezone, tzinfo
-from typing import Callable
-from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -29,16 +27,9 @@ def fixture_after_episode_spinoff_1() -> Callable[[], datetime]:
         '2022-06-30T08:00:00+02:00')
 
 
-@pytest.fixture(name='local_timezone')
-def fixture_local_timezone() -> tzinfo:
-    local_timezone = ZoneInfo('Europe/Berlin')
-    assert local_timezone is not None
-    return local_timezone
-
-
 @pytest.fixture(name='episode_579')
 def fixture_episode_579(
-        local_timezone: tzinfo,
+    local_timezone: tzinfo,
 ) -> Episode:
     return Episode(
         579,
