@@ -17,7 +17,7 @@ def fixture_episode_566(
     return Episode(
         566,
         name='Folge 566',
-        **(episode_boilerplate | {
+        **(episode_boilerplate | {  # type: ignore
             'date_published': datetime
             .fromisoformat('2021-05-12T20:15:00+02:00')
             .astimezone(timezone.utc)
