@@ -43,7 +43,8 @@ def scrape_wunschliste(html: Optional[str] = None) \
 
     def get_html() -> str:
         response = requests.get(WUNSCHLISTE_URL,
-                                params=WUNSCHLISTE_QUERY_PARAMETERS)
+                                params=WUNSCHLISTE_QUERY_PARAMETERS,
+                                timeout=30)
         response.raise_for_status()
         return response.text
 

@@ -16,7 +16,7 @@ def fixture_episode_in_utc(
     return Episode(
         567,
         name='Folge 567',
-        **(episode_boilerplate | {
+        **(episode_boilerplate | {  # type: ignore
             'timezone': timezone.utc,
         }),
     )
@@ -40,7 +40,7 @@ def fixture_rerun_episode(
     return Episode(
         567,
         name='Folge 567',
-        **(episode_boilerplate | {
+        **(episode_boilerplate | {  # type: ignore
             'is_rerun': True,
         }),
     )
