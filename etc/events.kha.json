@@ -188,6 +188,15 @@
       "sdDatePublished": "2022-08-24T16:27:24+02:00",
       "isRerun": false,
       "isSpinoff": false
+    },
+    "193C26A2-C6DC-409F-AB06-2C04A31F9CE3": {
+      "@type": "Episode",
+      "episodeNumber": 586,
+      "name": "Folge 586",
+      "datePublished": "2023-01-18T20:15:00+01:00",
+      "sdDatePublished": "2022-12-12T06:40:25+01:00",
+      "isRerun": false,
+      "isSpinoff": false
     }
   }
 }
