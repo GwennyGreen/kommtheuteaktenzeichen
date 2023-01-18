@@ -197,6 +197,15 @@
       "sdDatePublished": "2022-12-12T06:40:25+01:00",
       "isRerun": false,
       "isSpinoff": false
+    },
+    "FDD9A497-7227-4626-8B4B-C42DE399E132": {
+      "@type": "Episode",
+      "episodeNumber": 2,
+      "name": "Cold Cases – Folge 2",
+      "datePublished": "2023-03-01T20:15:00+01:00",
+      "sdDatePublished": "2023-01-18T22:41:41+01:00",
+      "isRerun": false,
+      "isSpinoff": true
     }
   }
 }
