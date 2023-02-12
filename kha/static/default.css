@@ -1,12 +1,38 @@
 body {
     align-items: center;
-    background-color: #fff;
-    color: #666;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         "Helvetica Neue", sans-serif;
     font-size: 14pt;
     line-height: 1.5;
     margin: 3em;
+}
+
+@media screen {
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-color: #111;
+            color: #aaa;
+        }
+
+        @media (prefers-contrast: more) {
+            body {
+                color: white;
+            }
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        body {
+            background-color: #f7f7f7;
+            color: #444;
+        }
+
+        @media (prefers-contrast: more) {
+            body {
+                color: black;
+            }
+        }
+    }
 }
 
 nav {
@@ -50,10 +76,35 @@ p {
 }
 
 .them {
-    color: #17a;
     font-weight: normal;
     margin-left: 3em;
     text-align: right;
+}
+
+@media screen {
+    @media (prefers-color-scheme: dark) {
+        .them {
+            color: #6ad;
+        }
+
+        @media (prefers-contrast: more) {
+            .them {
+                color: white;
+            }
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        .them {
+            color: #17a;
+        }
+
+        @media (prefers-contrast: more) {
+            .them {
+                color: black;
+            }
+        }
+    }
 }
 
 .bubble {
