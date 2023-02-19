@@ -224,6 +224,33 @@
       "sdDatePublished": "2023-02-19T16:12:15+01:00",
       "isRerun": false,
       "isSpinoff": false
+    },
+    "51B999FE-5C34-4CDC-BAA9-906385A3FC83": {
+      "@type": "Episode",
+      "episodeNumber": 589,
+      "name": "Folge 589",
+      "datePublished": "2023-04-12T20:15:00+02:00",
+      "sdDatePublished": "2023-02-19T16:29:26+01:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "468D320A-0A02-4437-86A6-39DD98D04D71": {
+      "@type": "Episode",
+      "episodeNumber": 590,
+      "name": "Folge 590",
+      "datePublished": "2023-05-10T20:15:00+02:00",
+      "sdDatePublished": "2023-02-19T16:30:46+01:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "8229E842-F571-40E4-ACD3-3E8721D47C2A": {
+      "@type": "Episode",
+      "episodeNumber": 593,
+      "name": "Folge 593",
+      "datePublished": "2023-08-16T20:15:00+02:00",
+      "sdDatePublished": "2023-02-19T16:32:33+01:00",
+      "isRerun": false,
+      "isSpinoff": false
     }
   }
 }
