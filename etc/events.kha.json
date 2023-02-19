@@ -215,6 +215,15 @@
       "sdDatePublished": "2023-01-18T22:41:41+01:00",
       "isRerun": false,
       "isSpinoff": true
+    },
+    "00AD594B-825E-4B6F-A1A4-FEAB49A1F130": {
+      "@type": "Episode",
+      "episodeNumber": 588,
+      "name": "Folge 588",
+      "datePublished": "2023-03-22T20:15:00+01:00",
+      "sdDatePublished": "2023-02-19T16:12:15+01:00",
+      "isRerun": false,
+      "isSpinoff": false
     }
   }
 }
