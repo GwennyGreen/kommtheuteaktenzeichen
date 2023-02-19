@@ -266,14 +266,6 @@ the virtual environment:
 poetry install
 ```
 
-### Checking dependencies for vulnerabilities
-
-To check Kommt heute Aktenzeichen’s dependencies for known vulnerabilities, run:
-
-```
-poetry run poe check
-```
-
 ### Checking dependencies for compatible updates
 
 To check Kommt heute Aktenzeichen’s dependencies for compatible updates, run:
