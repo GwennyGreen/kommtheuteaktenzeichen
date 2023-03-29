@@ -4,6 +4,7 @@
     "formulahendry.code-runner",
     "hediet.vscode-drawio",
     "ms-python.python",
+    "samuelcolvin.jinjahtml",
     "tamasfe.even-better-toml"
   ]
 }
