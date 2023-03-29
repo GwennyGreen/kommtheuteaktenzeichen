@@ -1,4 +1,7 @@
 {
+  "[jinja-html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
@@ -18,6 +21,9 @@
     68,
     72
   ],
+  "files.associations": {
+    "*.template.html": "jinja-html"
+  },
   "files.exclude": {
     "**/.git": true,
     "**/.mypy_cache": true,

@@ -1,4 +1,4 @@
-# pylint: disable=missing-function-docstring, missing-module-docstring
+# pylint: disable=magic-value-comparison, missing-function-docstring, missing-module-docstring
 
 from collections.abc import Callable
 from datetime import datetime, timezone

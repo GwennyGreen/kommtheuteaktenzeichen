@@ -16,8 +16,11 @@ from .episode_check_response import EpisodeCheckResponse, \
 from .local_types import EventsDict, IsoDatetimeStr
 from .settings \
     import EVENTS_JSON_BUCKET_DEV, EVENTS_JSON_BUCKET_PROD, \
-    EVENTS_JSON_FILENAME, LOCAL_EVENTS_JSON_PATH, USER_TIMEZONE
+    EVENTS_JSON_FILENAME, USER_TIMEZONE
 from .verdict import Verdict
+
+EPISODE_SCHEMA_TYPE = 'Episode'
+META_PROPERTY_TYPE = '@type'
 
 
 def check_episode() -> str:
@@ -120,20 +123,6 @@ def next_episode(
     return next(iter(filtered_sorted_episodes))
 
 
-def _merge(
-    episodes: Iterable[Episode],
-    new_episodes: Iterable[Episode],
-) -> list[Episode]:
-    """
-    Merges existing and new episodes together.
-    Returns a list, sorted by start date.
-    """
-    return sorted(
-        list(set(episodes) | set(new_episodes)),
-        key=operator.attrgetter('date_published'),
-    )
-
-
 def filter_eligible_episodes(
         unfiltered_episodes: Iterable[Episode]) \
         -> Iterable[Episode]:
@@ -154,7 +143,7 @@ def filter_eligible_episodes(
         start_dates = [
             episode.date_published
             for episode in unfiltered_episodes
-            if not(episode.is_rerun or episode.is_spinoff)
+            if not (episode.is_rerun or episode.is_spinoff)
         ]
         if not start_dates:
             return None
@@ -187,8 +176,8 @@ def all_episodes_from_store(client: Optional[S3Client] = None) \
 
 def _deserialize_events_dict(obj: dict[str, Any]) \
         -> Union[dict[str, Any], Episode]:
-    if '@type' in obj:
-        if obj['@type'] == 'Episode':
+    if META_PROPERTY_TYPE in obj:
+        if obj[META_PROPERTY_TYPE] == EPISODE_SCHEMA_TYPE:
             episode_dict = cast(EpisodeDict, obj)
             return Episode(
                 episode_dict['episodeNumber'],
@@ -205,20 +194,6 @@ def _deserialize_events_dict(obj: dict[str, Any]) \
             )
         raise RuntimeError(f'Unknown type `{obj["@type"]}`')
     return obj
-
-
-def _events_dict_from_file() -> EventsDict:
-    """
-    Loads an EventsDict from a file and returns it, sorted by
-    start date.
-    """
-    with LOCAL_EVENTS_JSON_PATH.open(encoding='UTF-8') \
-            as events_json:
-        return cast(
-            EventsDict,
-            json.load(events_json,
-                      object_hook=_deserialize_events_dict)
-        )
 
 
 def events_dict_from_store(client: Optional[S3Client] = None) -> EventsDict:
