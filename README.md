@@ -99,7 +99,8 @@ To set up your virtual environment, follow these steps:
 
 4. Run `pyenv exec poetry install`.
 
-You need to do the above steps only once.
+You need to do the above steps both at first install and also every time
+this project migrates to a new Python version (major or minor).
 
 To update your dependencies after a `git pull`, run `poetry update`.
 
@@ -252,14 +253,24 @@ If you get errors after a Git pull, refresh your dependencies:
 poetry update
 ```
 
+If that fails, see the next section, _Rebuilding the virtual environment_.
+
 ### Rebuilding the virtual environment
 
-If you’ve run `poetry update` and you still get errors, rebuild
-the virtual environment:
+If you get an error that says:
 
-```shell
-poetry install
-```
+> Current Python version (…) is not allowed by the project (~…).  
+> Please change python executable via the "env use" command.
+
+then rebuild your virtual environment:
+
+1. Delete the `.venv` subdirectory.
+
+2. Run `pyenv install -s`.
+
+3. Run `pyenv exec pip install poetry`.
+
+4. Run `pyenv exec poetry install`.
 
 ### Checking dependencies for compatible updates
 

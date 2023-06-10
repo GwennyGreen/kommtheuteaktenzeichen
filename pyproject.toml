@@ -16,7 +16,7 @@ license = "Apache-2.0"
 # We’re pinning Python to an exact minor version for compatibility.
 # Caution: always keep the major and minor number part in sync with
 # the `runtime` property in `zappa_settings.json`.
-python = "~3.9.0"
+python = "~3.10.0"
 
 boto3 = "~=1.26"
 colorama = "*"

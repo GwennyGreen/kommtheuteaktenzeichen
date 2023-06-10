@@ -2,7 +2,7 @@
 
 """Response to a request to check whether an episode runs today."""
 
-from typing import Literal, Union
+from typing import Literal
 
 from .local_types import IsoDatetimeStr
 from .verdict import Verdict
@@ -18,7 +18,7 @@ class EpisodePresentResponse:
                  sd_date_published: IsoDatetimeStr,
                  runs_today: bool,
                  episode_name: str,
-                 episode_number: Union[int, str]):
+                 episode_number: int | str):
         self.verdict = verdict
         self.reference_date = reference_date
         self.start_date = start_date
@@ -36,5 +36,4 @@ class EpisodeUnknownResponse:
         self.sd_date_published = sd_date_published
 
 
-EpisodeCheckResponse = Union[
-    EpisodePresentResponse, EpisodeUnknownResponse]
+EpisodeCheckResponse = EpisodePresentResponse | EpisodeUnknownResponse
