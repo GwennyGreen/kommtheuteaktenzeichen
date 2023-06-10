@@ -4,7 +4,6 @@ from datetime import datetime
 import re
 from re import Match
 from collections.abc import Iterable
-from typing import Optional
 
 import requests
 
@@ -37,7 +36,7 @@ WUNSCHLISTE_PARSE_EPISODE_PATTERN = r"""(?msx)
 """
 
 
-def scrape_wunschliste(html: Optional[str] = None) \
+def scrape_wunschliste(html: str | None = None) \
         -> Iterable[Episode]:
     """Scrape episodes from wunschliste.de"""
 
@@ -49,7 +48,7 @@ def scrape_wunschliste(html: Optional[str] = None) \
         return response.text
 
     def parse_episodes(html_source: str) \
-            -> Iterable[tuple[str, Optional[Match[str]]]]:
+            -> Iterable[tuple[str, Match[str] | None]]:
         return (
             (
                 episode_html,

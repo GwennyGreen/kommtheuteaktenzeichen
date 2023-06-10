@@ -243,12 +243,102 @@
       "isRerun": false,
       "isSpinoff": false
     },
+    "82D454E0-A2C0-451F-9C3D-6644D0299C19": {
+      "@type": "Episode",
+      "episodeNumber": 6,
+      "name": "Vorsicht, Betrug! – Folge 6",
+      "datePublished": "2023-05-31T20:15:00+02:00",
+      "sdDatePublished": "2023-06-11T00:03:53+02:00",
+      "isRerun": false,
+      "isSpinoff": true
+    },
+    "DBBAE574-0FB2-4ED3-8407-A6C23E0C6EF7": {
+      "@type": "Episode",
+      "episodeNumber": 591,
+      "name": "Folge 591",
+      "datePublished": "2023-06-14T20:15:00+02:00",
+      "sdDatePublished": "2023-06-11T00:06:40+02:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "1EF35FBD-9938-4E5D-92AB-701083E712D6": {
+      "@type": "Episode",
+      "episodeNumber": "5–6",
+      "name": "Gelöst – S02 F01–02",
+      "datePublished": "2023-07-05T20:15:00+02:00",
+      "sdDatePublished": "2023-06-11T00:12:14+02:00",
+      "isRerun": false,
+      "isSpinoff": true
+    },
+    "687D13D4-D676-4946-9227-A42DE9B14EB2": {
+      "@type": "Episode",
+      "episodeNumber": "7–8",
+      "name": "Gelöst – S02 F03–04",
+      "datePublished": "2023-07-12T20:15:00+02:00",
+      "sdDatePublished": "2023-06-11T00:16:50+02:00",
+      "isRerun": false,
+      "isSpinoff": true
+    },
+    "EB19AC5B-BE20-4A40-B58D-4068245ACB97": {
+      "@type": "Episode",
+      "episodeNumber": 592,
+      "name": "Folge 592",
+      "datePublished": "2023-07-26T20:15:00+02:00",
+      "sdDatePublished": "2023-06-11T00:20:12+02:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
     "8229E842-F571-40E4-ACD3-3E8721D47C2A": {
       "@type": "Episode",
       "episodeNumber": 593,
       "name": "Folge 593",
       "datePublished": "2023-08-16T20:15:00+02:00",
       "sdDatePublished": "2023-02-19T16:32:33+01:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "690E1550-5DD7-47A4-ADD6-492124A6FACC": {
+      "@type": "Episode",
+      "episodeNumber": 594,
+      "name": "Folge 594",
+      "datePublished": "2023-09-13T20:15:00+02:00",
+      "sdDatePublished": "2023-06-11T00:21:53+02:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "F19EF497-0E36-4A47-8EC5-BDE4D664FD17": {
+      "@type": "Episode",
+      "episodeNumber": 595,
+      "name": "Folge 595",
+      "datePublished": "2023-10-11T20:15:00+02:00",
+      "sdDatePublished": "2023-06-11T00:22:45+02:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "40342D4A-8F25-4F4C-8490-9334DFBFD6E2": {
+      "@type": "Episode",
+      "episodeNumber": 2,
+      "name": "Vermisst – Folge 2",
+      "datePublished": "2023-10-25T20:15:00+02:00",
+      "sdDatePublished": "2023-06-11T00:18:47+02:00",
+      "isRerun": false,
+      "isSpinoff": true
+    },
+    "B80673E5-9F41-4D71-BBD8-0BF707D452E9": {
+      "@type": "Episode",
+      "episodeNumber": 596,
+      "name": "Folge 596",
+      "datePublished": "2023-11-08T20:15:00+01:00",
+      "sdDatePublished": "2023-06-11T00:23:41+02:00",
+      "isRerun": false,
+      "isSpinoff": false
+    },
+    "D0DF5187-2302-4DCC-9C23-129816F0A18F": {
+      "@type": "Episode",
+      "episodeNumber": 597,
+      "name": "Folge 597",
+      "datePublished": "2023-11-29T20:15:00+01:00",
+      "sdDatePublished": "2023-06-11T00:24:45+02:00",
       "isRerun": false,
       "isSpinoff": false
     }

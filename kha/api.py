@@ -5,7 +5,7 @@ import json
 import operator
 import os
 from collections.abc import Callable, Iterable
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import boto3
 from mypy_boto3_s3.client import S3Client
@@ -36,7 +36,7 @@ def check_episode() -> str:
 
 
 def check(
-    episodes: Optional[Iterable[Episode]] = None,
+    episodes: Iterable[Episode] | None = None,
     now: Callable[..., datetime] = datetime.now,
 ) -> EpisodeCheckResponse:
     """
@@ -86,9 +86,9 @@ def check(
 
 
 def next_episode(
-    episodes: Optional[Iterable[Episode]] = None,
+    episodes: Iterable[Episode] | None = None,
     after: Callable[..., datetime] = datetime.now,
-) -> Optional[Episode]:
+) -> Episode | None:
     """
     Returns the current or next episode that is broadcast
     relative to a given point in time, the *reference point*.
@@ -134,7 +134,7 @@ def filter_eligible_episodes(
     Returns a list, sorted by start date.
     """
     def last_published_date_ignoring_spinoffs() \
-            -> Optional[datetime]:
+            -> datetime | None:
         """
         Of all start dates of known episodes, return the latest one,
         ignoring spin-off episodes.
@@ -161,7 +161,7 @@ def filter_eligible_episodes(
             yield episode
 
 
-def all_episodes_from_store(client: Optional[S3Client] = None) \
+def all_episodes_from_store(client: S3Client | None = None) \
         -> list[Episode]:
     """
     Loads all episodes from the backing store and returns them,
@@ -175,7 +175,7 @@ def all_episodes_from_store(client: Optional[S3Client] = None) \
 
 
 def _deserialize_events_dict(obj: dict[str, Any]) \
-        -> Union[dict[str, Any], Episode]:
+        -> dict[str, Any] | Episode:
     if META_PROPERTY_TYPE in obj:
         if obj[META_PROPERTY_TYPE] == EPISODE_SCHEMA_TYPE:
             episode_dict = cast(EpisodeDict, obj)
@@ -196,7 +196,8 @@ def _deserialize_events_dict(obj: dict[str, Any]) \
     return obj
 
 
-def events_dict_from_store(client: Optional[S3Client] = None) -> EventsDict:
+def events_dict_from_store(client: S3Client | None = None) \
+        -> EventsDict:
     """
     Loads an EventsDict from the backing store and returns it,
     sorted by start date.
@@ -213,7 +214,7 @@ def events_dict_from_store(client: Optional[S3Client] = None) -> EventsDict:
     )
 
 
-def list_eligible_episodes(client: Optional[S3Client] = None) \
+def list_eligible_episodes(client: S3Client | None = None) \
         -> None:
     """
     From all known episodes in the backing store, prints a list of
@@ -227,7 +228,7 @@ def list_eligible_episodes(client: Optional[S3Client] = None) \
         print(repr(episode))
 
 
-def print_episodes_dev(client: Optional[S3Client] = None) -> None:
+def print_episodes_dev(client: S3Client | None = None) -> None:
     """
     Downloads episodes from the backing store and prints them
     on standard output.
@@ -235,7 +236,7 @@ def print_episodes_dev(client: Optional[S3Client] = None) -> None:
     _print_episodes(EVENTS_JSON_BUCKET_DEV, client)
 
 
-def print_episodes_prod(client: Optional[S3Client] = None) -> None:
+def print_episodes_prod(client: S3Client | None = None) -> None:
     """
     Downloads episodes from the backing store and prints them
     on standard output.
@@ -244,7 +245,7 @@ def print_episodes_prod(client: Optional[S3Client] = None) -> None:
 
 
 def _print_episodes(bucket: str,
-                    client: Optional[S3Client] = None) -> None:
+                    client: S3Client | None = None) -> None:
     s3_client = client or boto3.client('s3')
     response = s3_client.get_object(
         Bucket=bucket,

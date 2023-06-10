@@ -4,14 +4,14 @@
 
 from collections.abc import Callable
 from datetime import datetime, timezone as timezone_module, tzinfo
-from typing import Optional, TypedDict, Union
+from typing import TypedDict
 
 from dateutil.relativedelta import relativedelta
 
 
 class EpisodeDict(TypedDict):
     """Serialization structure for an Episode."""
-    episodeNumber: Union[int, str]
+    episodeNumber: int | str
     name: str
     datePublished: str
     sdDatePublished: str
@@ -23,14 +23,14 @@ class Episode:
     """Single episode of a series."""
 
     def __init__(self,
-                 episode_number: Union[int, str],
+                 episode_number: int | str,
                  name: str,
                  date_published: datetime,
                  sd_date_published: datetime,
                  is_rerun: bool = False,
                  is_spinoff: bool = False,
-                 timezone: Optional[tzinfo] = timezone_module.utc):
-        self.episode_number: Union[int, str] = episode_number
+                 timezone: tzinfo | None = timezone_module.utc):
+        self.episode_number: int | str = episode_number
         self.name: str = name
         self.date_published: datetime = \
             date_published.astimezone(timezone_module.utc)
@@ -42,7 +42,7 @@ class Episode:
 
     @property
     def domain_key(self) \
-            -> tuple[Union[int, str], bool, bool]:
+            -> tuple[int | str, bool, bool]:
         """
         Domain key to identify an episode.
         Two episodes are the same thing if and only if they have
@@ -131,12 +131,12 @@ class Episode:
             f'name={repr(self.name)}',
             'date_published=datetime.datetime.fromisoformat'
             + brackets.format(repr(self
-                                 .local_date_published()
-                                 .isoformat(timespec='seconds'))),
+                                   .local_date_published()
+                                   .isoformat(timespec='seconds'))),
             'sd_date_published=datetime.datetime.fromisoformat'
             + brackets.format(repr(self
-                                 .local_sd_date_published()
-                                 .isoformat(timespec='seconds'))),
+                                   .local_sd_date_published()
+                                   .isoformat(timespec='seconds'))),
             f'is_rerun={repr(self.is_rerun)}',
             f'is_spinoff={repr(self.is_spinoff)}',
             f'timezone={repr(self.timezone)}',

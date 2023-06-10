@@ -20,13 +20,13 @@ regardless of your system Python.
 
 To install `pyenv` on Windows, run:
 
-```
+```shell
 python -m pip install pyenv
 ```
 
 To install `pyenv` on macOS, run:
 
-```
+```shell
 brew install pyenv
 ```
 
@@ -36,7 +36,7 @@ at [github.com/pyenv/pyenv](https://github.com/pyenv/pyenv#basic-github-checkout
 
 To verify `pyenv` is working, run:
 
-```
+```shell
 pyenv --version
 ```
 
@@ -46,13 +46,13 @@ Make sure you have Python (any version) installed on your system.
 
 To check, run:
 
-```
+```shell
 pip --version
 ```
 
 If that fails, try:
 
-```
+```shell
 pip3 --version
 ```
 
@@ -68,7 +68,7 @@ described in Poetry’s documentation.
 
 To install Poetry on macOS, run:
 
-```
+```shell
 brew install poetry
 ```
 
@@ -83,7 +83,7 @@ described in Poetry’s documentation.
 
 To verify Poetry is working, run:
 
-```
+```shell
 poetry --version
 ```
 
@@ -99,7 +99,8 @@ To set up your virtual environment, follow these steps:
 
 4. Run `pyenv exec poetry install`.
 
-You need to do the above steps only once.
+You need to do the above steps both at first install and also every time
+this project migrates to a new Python version (major or minor).
 
 To update your dependencies after a `git pull`, run `poetry update`.
 
@@ -127,11 +128,9 @@ If you’re using VS Code, we recommend that you install a couple of extensions:
 
 VS Code should automatically remind you to install those when you first open the project.
 
-
 ### Tasks
 
 In VS Code, you may prefer to use the _Run Task_ command instead of the various command lines in this document.
-
 
 ## Running kommtheuteaktenzeichen
 
@@ -139,7 +138,7 @@ In VS Code, you may prefer to use the _Run Task_ command instead of the various
 
 To launch the web server locally, run:
 
-```
+```shell
 poetry run poe server
 ```
 
@@ -148,18 +147,17 @@ To do this really quickly, hold down <kbd>⌘</kbd> and double-click the URL tha
 
 Note: this local server is connected to the development bucket, not the production one.
 
-
 ### Running the CLI version
 
 To do a quick check whether Aktenzeichen runs today, run:
 
-```
+```shell
 poetry run poe cli check
 ```
 
 This will print something like:
 
-> ```
+> ```plain
 > Kommt heute Aktenzeichen?
 > Nein.
 > {
@@ -175,7 +173,6 @@ This will print something like:
 
 Note: the CLI is connected to the development bucket, not the production one.
 
-
 ## Contributing to kommtheuteaktenzeichen
 
 ### How kha runs in production
@@ -186,18 +183,17 @@ Note: the CLI is connected to the development bucket, not the production one.
 
 ![High-level block diagram that shows how kommtheuteaktenzeichen.de runs locally](doc/assets/how-kha-runs-locally.drawio.svg)
 
-
 ### Running the tests
 
 To execute the tests, run:
 
-```
+```shell
 poetry run poe tests
 ```
 
 To execute a single test, run e. g.:
 
-```
+```shell
 poetry run poe tests -vv tests/test_api.py::test_next_start
 ```
 
@@ -208,7 +204,7 @@ You don’t need _Run tasks_ for executing tests.
 
 To execute the linter, run:
 
-```
+```shell
 poetry run poe linter
 ```
 
@@ -220,7 +216,7 @@ Specifically, you don’t need _Run tasks_ for linting.
 
 To execute the static type check, run:
 
-```
+```shell
 poetry run poe typecheck
 ```
 
@@ -228,7 +224,7 @@ poetry run poe typecheck
 
 To upload `etc/events.kha.json` to the development bucket, run:
 
-```
+```shell
 poetry run poe upload-events
 ```
 
@@ -239,7 +235,7 @@ development.
 
 To upload `etc/events.kha.json` to the production bucket, run:
 
-```
+```shell
 poetry run poe upload-events --to-bucket=kha-store --profile=kha-deploy
 ```
 
@@ -253,24 +249,34 @@ faulty.
 
 If you get errors after a Git pull, refresh your dependencies:
 
-```
+```shell
 poetry update
 ```
 
+If that fails, see the next section, _Rebuilding the virtual environment_.
+
 ### Rebuilding the virtual environment
 
-If you’ve run `poetry update` and you still get errors, rebuild
-the virtual environment:
+If you get an error that says:
 
-```
-poetry install
-```
+> Current Python version (…) is not allowed by the project (~…).  
+> Please change python executable via the "env use" command.
+
+then rebuild your virtual environment:
+
+1. Delete the `.venv` subdirectory.
+
+2. Run `pyenv install -s`.
+
+3. Run `pyenv exec pip install poetry`.
+
+4. Run `pyenv exec poetry install`.
 
 ### Checking dependencies for compatible updates
 
 To check Kommt heute Aktenzeichen’s dependencies for compatible updates, run:
 
-```
+```shell
 poetry update --dry-run
 ```
 
@@ -285,7 +291,6 @@ poetry update --dry-run
 - If the contributor should have full administrative access to the entire AWS account (sans managing users), attach the following policies directly to the user:
   - `arn:aws:iam::aws:policy/IAMReadOnlyAccess`
   - `arn:aws:iam::aws:policy/PowerUserAccess`
-
 
 ### Creating IAM credentials with restricted privileges
 
@@ -302,7 +307,7 @@ To create a new set of IAM credentials with restricted privileges, follow these 
 
 - In your `~/.aws/config` file, add two new sections like so:
 
-    ```
+    ```ini
     [profile iam-user-kha]
     aws_access_key_id = <access key ID>
     aws_secret_access_key = <secret access key>
@@ -311,7 +316,6 @@ To create a new set of IAM credentials with restricted privileges, follow these 
     role_arn = <ARN of the `kha-dev-RestrictedAccessRole` role>
     source_profile = iam-user-kha
     ```
-
 
 ### Creating IAM credentials for deployment
 
@@ -327,7 +331,7 @@ To create a new set of IAM credentials for deployment, follow these steps:
 
 - In your `~/.aws/config` file, add two new sections like so:
 
-    ```
+    ```ini
     [profile iam-user-kha-deploy]
     credential_process = <command line to get the security credentials>
 
@@ -335,7 +339,6 @@ To create a new set of IAM credentials for deployment, follow these steps:
     role_arn = <ARN of the `kha-prod-DeploymentRole` role>
     source_profile = iam-user-kha-deploy
     ```
-
 
 ## Creating and deploying a TLS certificate
 
@@ -362,7 +365,6 @@ To create a new set of IAM credentials for deployment, follow these steps:
 
 8. Run `poetry run zappa certify`.
 
-
 ## Renewing the TLS certificate
 
 To view the TLS certificate as JSON, run:
@@ -376,7 +378,7 @@ aws acm describe-certificate \
 
 To view just the renewal status, run:
 
-```
+```bash
 aws acm describe-certificate \
   --certificate-arn "$(jq -r .prod.certificate_arn zappa_settings.json)" \
   --region 'us-east-1' \
@@ -422,21 +424,19 @@ To renew a certificate:
     need to deploy anything because the existing certificate has
     been renewed and remains deployed.
 
-
 ## Deployment
 
 To deploy the project to production, run:
 
-```
+```shell
 poetry run poe deploy
 ```
 
 To re-deploy to production, run:
 
-```
+```shell
 poetry run poe update
 ```
-
 
 ## Advanced: Setting up AWS from scratch
 
@@ -454,7 +454,7 @@ Steps to set up AWS from scratch:
 
 - Install the AWS CLI. To do this on macOS, run:
 
-    ```bash
+    ```shell
     brew reinstall awscli
     ```
 
@@ -464,20 +464,20 @@ Steps to set up AWS from scratch:
 
 - In your `~/.aws/config` file, add a `credential_process` line to the section. For example:
 
-    ```
+    ```ini
     [default]
     credential_process = <command line to get the security credentials>
     ```
 
 - Check connectivity:
 
-    ```bash
+    ```shell
     aws iam get-user
     ```
 
 - Set up Zappa for your AWS account:
 
-    ```bash
+    ```shell
     poetry run zappa init
     ```
 
@@ -487,7 +487,7 @@ Steps to set up AWS from scratch:
 
 - Create a `SelfAdmin` user group:
 
-    ```bash
+    ```shell
     aws iam create-group \
       --group-name 'SelfAdmin' \
       --path '/selfadmin/'
@@ -510,7 +510,7 @@ Steps to set up AWS from scratch:
 
 - Create a `BasicManagementConsoleAccess` user group:
 
-    ```bash
+    ```shell
     aws iam create-group \
       --group-name 'BasicManagementConsoleAccess' \
       --path '/basic/managementconsole/'
@@ -520,7 +520,7 @@ Steps to set up AWS from scratch:
 
 - Create a `kha-Maintainers` user group:
 
-    ```bash
+    ```shell
     aws iam create-group \
       --group-name 'kha-Maintainers' \
       --path '/kha/maintainers/'
@@ -528,7 +528,7 @@ Steps to set up AWS from scratch:
 
 - Create a `kha-Developers` user group:
 
-    ```bash
+    ```shell
     aws iam create-group \
       --group-name 'kha-Developers' \
       --path '/kha/developers/'
@@ -594,14 +594,12 @@ Steps to set up AWS from scratch:
     }
     ```
 
-
 - Edit the `kha-Maintainers` group and grant them the following permissions:
   - `kha-prod-DeploymentPolicy`
   - `kha-prod-RestrictedAccessPolicy`
   - `kha-dev-RestrictedAccessPolicy`
 
 - Edit the `kha-Developers` group and grant them the `kha-dev-RestrictedAccessPolicy` permission.
-
 
 ## Advanced: 1Password integration
 
@@ -618,7 +616,7 @@ One-time steps to configure 1Password CLI on macOS:
 
 2. Make sure the `jq` utility is installed. To install or update it, run:
 
-    ```bash
+    ```shell
     brew reinstall jq
     ```
 
@@ -653,20 +651,18 @@ One-time steps to configure 1Password CLI on macOS:
 
 8. Edit your `~/.aws/config` as follows:
 
-    ```
+    ```ini
     [default]
     credential_process = /path/to/op-aws-credentials-client
     ```
 
 9. Replace the fragment `/path/to/op-aws-credentials-client` with the actual path to your `op-aws-credentials-client` script.
 
-
 ## Acknowledgements
 
 This website uses the Economica font by [Vicente Lamonaca](https://lamonaca.org/). The font is licensed under the [SIL Open Font License, 1.1](http://scripts.sil.org/OFL).
 
 We have used [favicon.io](https://favicon.io) to generate favicons.
-
 
 ## License
 
@@ -675,3 +671,10 @@ Copyright (c) 2021 – 2022 The kommtheuteaktenzeichen authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 For a copy of the License, see [LICENSE](LICENSE).
+
+<!-- markdownlint-configure-file {
+  "no-inline-html": {
+    "allowed_elements": ["kbd"]
+  }
+}
+-->

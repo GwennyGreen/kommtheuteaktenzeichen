@@ -1,7 +1,7 @@
 """Package-scoped type annotations."""
 
 from datetime import datetime
-from typing import Literal, NewType, Optional, TypedDict
+from typing import Literal, NewType, TypedDict
 
 from .episode import Episode
 from .verdict import Verdict
@@ -29,7 +29,7 @@ class PageContextDict(TypedDict):
     question: str
     verdict: Verdict
     verdict_statement: str
-    formatted_start_date: Optional[str]
+    formatted_start_date: str | None
     short_explanation: str
     answer_known: bool
     iso_sd_date_published: str

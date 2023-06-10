@@ -40,9 +40,9 @@
       "url": "/share/events.kha.schema.json"
     }
   ],
-  "python.analysis.typeCheckingMode": "strict",
-  "python.linting.enabled": true,
+  "python.analysis.typeCheckingMode": "off",
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.linting.enabled": true,
   "python.linting.pylintArgs": [
     "--enable-all-extensions"
   ],
